@@ -96,9 +96,9 @@ Así, cada vez que ocurre un evento en las reservas, los observers suscriptos re
 
 >Endpoints de las reservas (pueden terminar habiendo mas)
 
-* Crear reserva: POST /api/reservas
+* Crear reserva: POST /api/reservations
 
-* Cancelar reserva: DELETE api/reservas/:id
+* Cancelar reserva: DELETE api/reservations/:id
 
 
 # Integrantes del grupo
@@ -110,4 +110,4 @@ Ramos Cavero, Luciano
 Borri, Marcos
 
 # Aclaraciones
-Lo planteado es el MVP del proyecto, si vemos que andamos bien con el tiempo vamos a integrar un frontend para la API, o futuras funciones que se nos ocurran
+Lo planteado es el MVP del proyecto, futuras implementaciones serían frontend y sistema de login con jwt
