@@ -1,10 +1,6 @@
-import express from "express";
-const app = express();
+import Server from "./server";
 
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("API Turnero funcionando");
+const server = new Server(3000);
+server.start(() => {
+  console.log("on port 3000");
 });
-
-export default app;
