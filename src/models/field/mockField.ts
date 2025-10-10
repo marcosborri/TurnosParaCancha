@@ -8,16 +8,16 @@ export class MockField implements FieldCrud {
   getFields(): Array<Field> {
     throw new Error("Method not implemented.");
   }
-  addField(field: Field): string {
+  addField(field: Field): Field {
     throw new Error("Method not implemented.");
   }
-  editFieldName(id: number, name: string): string {
+  editFieldName(id: number, name: string): Field {
     throw new Error("Method not implemented.");
   }
-  editFieldType(id: number, type: TypeField): string {
+  editFieldType(id: number, type: TypeField): Field {
     throw new Error("Method not implemented.");
   }
-  editFieldPrice(id: number, price: number): string {
+  editFieldPrice(id: number, price: number): Field {
     throw new Error("Method not implemented.");
   }
   deleteField(id: number): string {
