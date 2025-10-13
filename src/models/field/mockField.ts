@@ -24,3 +24,5 @@ export class MockField implements FieldCrud {
     throw new Error("Method not implemented.");
   }
 }
+
+export default new MockField();
