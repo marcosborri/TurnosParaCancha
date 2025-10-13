@@ -1,5 +1,4 @@
 import { Field, TypeField } from "../models/field/field.model";
-import mockField from "../models/field/mockField";
 import fieldRepo from "../models/field/mockField";
 
 export class FieldService {
