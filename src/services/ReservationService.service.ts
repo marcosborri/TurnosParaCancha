@@ -150,7 +150,7 @@ export class ReservationService {
         throw new Error("Reserva no existente");
       }
 
-      await reservationRepo.deleteReservation(id);
+      await reservationRepo.deleteReservation(reservationToDelete.getId());
       return reservationToDelete;
     } catch (error) {
       throw new Error(`Error al eliminar la reserva ${error}`);

@@ -34,13 +34,8 @@ export class FieldService {
     }
   }
 
-  //editField
-  async editField(data: {
-    id: number;
-    name: string;
-    type: TypeField;
-    price: number;
-  }): Promise<Field> {
+  //Editar nombre
+  async nameFieldEdit(data: { id: number; name: string }): Promise<Field> {
     try {
       if (!data.id) {
         throw new Error("Necesito un ID para poder editar la cancha");
@@ -53,14 +48,56 @@ export class FieldService {
       }
 
       fieldToEdit.setName(data.name);
-      fieldToEdit.setTypeField(data.type);
-      fieldToEdit.setPrice(data.price);
 
       await fieldRepo.editFieldName(data.id, data.name);
-      await fieldRepo.editFieldType(data.id, data.type);
-      await fieldRepo.editFieldPrice(data.id, data.price);
 
       return fieldToEdit;
+    } catch (error) {
+      throw new Error(`Error al editar la cancha ${error}`);
+    }
+  }
+
+  //Editar Tipo de cancha
+  async typeFieldEdit(data: { id: number; type: TypeField }): Promise<Field> {
+    try {
+      if (!data.id) {
+        throw new Error("Necesito un ID para poder editar la cancha");
+      }
+
+      const typeFieldToEdit = await fieldRepo.getField(data.id);
+
+      if (!typeFieldToEdit) {
+        throw new Error("Cancha no existente");
+      }
+
+      typeFieldToEdit.setTypeField(data.type);
+
+      await fieldRepo.editFieldType(data.id, data.type);
+
+      return typeFieldToEdit;
+    } catch (error) {
+      throw new Error(`Error al editar la cancha ${error}`);
+    }
+  }
+
+  //Editar precio de la cancha
+  async priceFieldEdit(data: { id: number; price: number }): Promise<Field> {
+    try {
+      if (!data.id) {
+        throw new Error("Necesito un ID para poder editar la cancha");
+      }
+
+      const priceFieldToEdit = await fieldRepo.getField(data.id);
+
+      if (!priceFieldToEdit) {
+        throw new Error("Cancha no existente");
+      }
+
+      priceFieldToEdit.setPrice(data.price);
+
+      await fieldRepo.editFieldPrice(data.id, data.price);
+
+      return priceFieldToEdit;
     } catch (error) {
       throw new Error(`Error al editar la cancha ${error}`);
     }
