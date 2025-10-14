@@ -32,3 +32,5 @@ export class MockReservation implements ReservationCrud {
     throw new Error("Method not implemented.");
   }
 }
+
+export default new MockReservation();

@@ -79,7 +79,7 @@ export class FieldService {
 
       return fieldToDelete;
     } catch (error) {
-      throw new Error(`Error al eliminar la cancha" ${error}`);
+      throw new Error(`Error al eliminar la cancha ${error}`);
     }
   }
 }
