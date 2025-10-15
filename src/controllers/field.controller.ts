@@ -10,7 +10,7 @@ export class FieldController {
     }
   }
 
-  async getField(req: Request, res: Response) {
+  async getFieldById(req: Request, res: Response) {
     const { id } = req.params;
 
     if (!id) {
