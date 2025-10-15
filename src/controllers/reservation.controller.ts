@@ -34,7 +34,7 @@ export class ReservationController {
   async addNewReservation(req: Request, res: Response) {
     const { field, user, start, end, paid } = req.body;
 
-    if (!field || !user || !start || !end || !paid) {
+    if (!field || !user || !start || !end || paid === undefined) {
       return res
         .status(400)
         .json({ error: "Faltan datos para crear una reserva" });
@@ -47,14 +47,14 @@ export class ReservationController {
         end,
         paid,
       });
-      return res.status(200).json(newReservation);
+      return res.status(201).json(newReservation);
     } catch (error) {
       return res.status(400).json({ error: error });
     }
   }
 
   //Eliminar una reserva
-  async eliminateField(req: Request, res: Response) {
+  async eliminateReservation(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) {
       return res.status(400).json({ error: "ID no es correcto" });
@@ -70,7 +70,7 @@ export class ReservationController {
   }
 
   //Editar campos
-  async fieldReservationEditasync(req: Request, res: Response) {
+  async fieldReservationEdit(req: Request, res: Response) {
     const { id, field } = req.body;
     if (!id || !field) {
       return res.status(400).json({ error: "Falta completar campos" });
@@ -136,7 +136,7 @@ export class ReservationController {
 
   async paidReservationEdit(req: Request, res: Response) {
     const { id, paid } = req.body;
-    if (!id || !paid) {
+    if (!id || paid === undefined) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
