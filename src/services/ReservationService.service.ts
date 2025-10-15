@@ -157,3 +157,5 @@ export class ReservationService {
     }
   }
 }
+
+export default new ReservationService();

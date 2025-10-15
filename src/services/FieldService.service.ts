@@ -120,3 +120,5 @@ export class FieldService {
     }
   }
 }
+
+export default new FieldService();
