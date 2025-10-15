@@ -58,7 +58,7 @@ export class UserService {
       emailToEdit.setEmail(data.email);
       return emailToEdit;
     } catch (error) {
-      throw new Error(`Error al editar el nombre de usuario ${error}`);
+      throw new Error(`Error al editar el email del usuario ${error}`);
     }
   }
   //Editar celular del usuario
@@ -75,7 +75,9 @@ export class UserService {
       phonenumberToEdit.setPhonenumber(data.phonenumber);
       return phonenumberToEdit;
     } catch (error) {
-      throw new Error(`Error al editar el nombre de usuario ${error}`);
+      throw new Error(
+        `Error al editar el numero de telefono del usuario ${error}`
+      );
     }
   }
   //Eliminar usuario
