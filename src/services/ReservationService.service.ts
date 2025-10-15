@@ -104,7 +104,7 @@ export class ReservationService {
     }
   }
 
-  async endReservationEdit(data: {
+  async editReservationEnd(data: {
     id: number;
     end: Date;
   }): Promise<Reservation> {
@@ -122,7 +122,7 @@ export class ReservationService {
     }
   }
 
-  async paidReservationEdit(data: {
+  async editReservationPaid(data: {
     id: number;
     paid: boolean;
   }): Promise<Reservation> {
