@@ -150,3 +150,5 @@ export class ReservationController {
     }
   }
 }
+
+export default new ReservationController();

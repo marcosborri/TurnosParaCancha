@@ -11,7 +11,7 @@ export class ReservationService {
 
   //Obtener reserva por ID
   async getReservation(id: number): Promise<Reservation> {
-    if (!id) {
+    if (!id || id <= 0) {
       throw new Error("ID no valido");
     }
     try {
@@ -141,7 +141,7 @@ export class ReservationService {
   }
 
   async deleteReservation(id: number): Promise<Reservation> {
-    if (!id) {
+    if (!id || id <= 0) {
       throw new Error("No hay ID para eliminar reserva");
     }
     try {

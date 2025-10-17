@@ -97,3 +97,5 @@ export class FieldController {
     }
   }
 }
+
+export default new FieldController();

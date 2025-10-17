@@ -9,7 +9,7 @@ export class FieldService {
 
   //getFielById
   async getField(id: number): Promise<Field> {
-    if (!id) {
+    if (!id || id <= 0) {
       throw new Error("El ID no es correcto");
     }
     try {
@@ -76,7 +76,7 @@ export class FieldService {
 
       return typeFieldToEdit;
     } catch (error) {
-      throw new Error(`Error al editar la cancha ${error}`);
+      throw new Error(`Error al editar el tipo de la cancha ${error}`);
     }
   }
 
@@ -99,7 +99,7 @@ export class FieldService {
 
       return priceFieldToEdit;
     } catch (error) {
-      throw new Error(`Error al editar la cancha ${error}`);
+      throw new Error(`Error al editar el precio de la cancha ${error}`);
     }
   }
 
