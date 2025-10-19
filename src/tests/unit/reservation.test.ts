@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, beforeAll } from "vitest";
-import { Reservation } from "../../models/mock/reservation/reservation.model";
-import { User } from "../../models/mock/user/user.model";
-import { Field } from "../../models/mock/field/field.model";
-import { MockReservation } from "../../models/mock/reservation/mockReservation";
+import { Reservation } from "../../models/reservation.model";
+import { User } from "../../models/user.model";
+import { Field } from "../../models/field.model";
+import { MockReservation } from "../../models/implementations/mock/mockReservation";
 
 
 let reservation2: Reservation;

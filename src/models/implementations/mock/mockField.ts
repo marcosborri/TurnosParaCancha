@@ -1,5 +1,5 @@
 import { FieldCrud } from "../../interface/fieldCrud.model";
-import { Field, TypeField } from "./field.model";
+import { Field, TypeField } from "../../field.model";
 
 export class MockField implements FieldCrud {
   getField(id: number): Field {

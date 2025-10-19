@@ -1,7 +1,8 @@
 import { ReservationCrud } from "../../interface/reservationCrud.model";
-import { Field } from "../field/field.model";
-import { User } from "../user/user.model";
-import { Reservation } from "./reservation.model";
+import { Field } from "../../field.model";
+import { User } from "../../user.model";
+import { Reservation } from "../../reservation.model";
+
 
 
 export class MockReservation implements ReservationCrud {

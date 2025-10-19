@@ -1,8 +1,7 @@
 
-
-import { Field } from "../mock/field/field.model";
-import { Reservation } from "../mock/reservation/reservation.model";
-import { User } from "../mock/user/user.model";
+import { Field } from "../field.model";
+import { Reservation } from "../reservation.model";
+import { User } from "../user.model";
 
 export interface ReservationCrud {
   getReservation(id: number): Reservation;

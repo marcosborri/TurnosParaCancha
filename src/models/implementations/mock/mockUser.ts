@@ -1,5 +1,5 @@
 import { UserCrud } from "../../interface/userCrud.model";
-import { User } from "./user.model";
+import { User } from "../../user.model";
 
 export class MockUser implements UserCrud {
   getUser(id: number): User {

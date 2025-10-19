@@ -1,5 +1,5 @@
-import { Field } from "../field/field.model";
-import { User } from "../user/user.model";
+import { Field } from "./field.model";
+import { User } from "./user.model";
 
 
 export class Reservation {

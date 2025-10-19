@@ -1,4 +1,5 @@
-import { User } from "../mock/user/user.model";
+import { User } from "../user.model";
+
 
 export interface UserCrud {
   getUser(id: number): User;

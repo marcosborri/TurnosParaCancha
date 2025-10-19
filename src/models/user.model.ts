@@ -1,4 +1,3 @@
-import { Reservation } from "../reservation/reservation.model";
 
 export class User {
   constructor(
@@ -6,7 +5,7 @@ export class User {
     private username: string,
     private email: string,
     private phonenumber: number
-  ) {}
+  ) { }
 
   //Getters
   public getId(): number {
