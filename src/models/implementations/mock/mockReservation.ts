@@ -6,28 +6,28 @@ import { Reservation } from "../../reservation.model";
 
 
 export class MockReservation implements ReservationCrud {
-  editReservationField(id: number, field: Field): Reservation {
+  editReservationField(id: number, field: Field): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
-  getReservation(id: number): Reservation {
+  getReservation(id: number): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
-  getReservations(): Array<Reservation> {
+  getReservations(): Promise<Array<Reservation>> {
     throw new Error("Method not implemented.");
   }
-  addReservation(reservation: Reservation): Reservation {
+  addReservation(reservation: Reservation): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
-  editReservationUser(id: number, user: User): Reservation {
+  editReservationUser(id: number, user: User): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
-  editReservationStart(id: number, start: Date): Reservation {
+  editReservationStart(id: number, start: Date): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
-  editReservationEnd(id: number, end: Date): Reservation {
+  editReservationEnd(id: number, end: Date): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
-  editReservationPaid(id: number, paid: boolean): Reservation {
+  editReservationPaid(id: number, paid: boolean): Promise<Reservation> {
     throw new Error("Method not implemented.");
   }
   deleteReservation(id: number): string {
