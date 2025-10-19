@@ -1,5 +1,5 @@
-import { Field, TypeField } from "../models/field/field.model";
-import fieldRepo from "../models/field/mockField";
+import { Field, TypeField } from "../models/mock/field/field.model";
+import fieldRepo from "../models/mock/field/mockField";
 
 export class FieldService {
   //getFields

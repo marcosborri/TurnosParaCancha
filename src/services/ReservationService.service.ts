@@ -1,7 +1,7 @@
-import { Reservation } from "../models/reservation/reservation.model";
-import reservationRepo from "../models/reservation/mockReservation";
-import { Field } from "../models/field/field.model";
-import { User } from "../models/user/user.model";
+import { Reservation } from "../models/mock/reservation/reservation.model";
+import reservationRepo from "../models/mockReservation";
+import { Field } from "../models/mock/field/field.model";
+import { User } from "../models/mock/user/user.model";
 
 export class ReservationService {
   //Obtener todas las reservas

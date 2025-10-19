@@ -1,4 +1,4 @@
-import { FieldCrud } from "./interface/fieldCrud.model";
+import { FieldCrud } from "../../interface/fieldCrud.model";
 import { Field, TypeField } from "./field.model";
 
 export class MockField implements FieldCrud {

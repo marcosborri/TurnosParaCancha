@@ -1,6 +1,7 @@
 import { Field } from "../field/field.model";
 import { User } from "../user/user.model";
 
+
 export class Reservation {
   constructor(
     private id: number,
@@ -9,7 +10,7 @@ export class Reservation {
     private start: Date,
     private end: Date,
     private paid: boolean
-  ) {}
+  ) { }
 
   //Getters
 

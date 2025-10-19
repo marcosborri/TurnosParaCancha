@@ -1,5 +1,5 @@
-import { User } from "../models/user/user.model";
-import userRepo from "../models/user/mockUser";
+import { User } from "../models/mock/user/user.model";
+import userRepo from "../models/mock/user/mockUser";
 export class UserService {
   //Obtener todos los usuarios
   async getUsers(): Promise<User[]> {

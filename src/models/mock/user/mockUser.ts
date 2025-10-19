@@ -1,4 +1,4 @@
-import { UserCrud } from "./interface/userCrud.model";
+import { UserCrud } from "../../interface/userCrud.model";
 import { User } from "./user.model";
 
 export class MockUser implements UserCrud {

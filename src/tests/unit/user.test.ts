@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, beforeAll, Mock } from "vitest";
-import { User } from "./../../models/user/user.model";
-import { MockUser } from "./../../models/user/mockUser";
+import { User } from "../../models/mock/user/user.model";
+import { MockUser } from "../../models/mock/user/mockUser";
 let user2: User;
 
 beforeAll(() => {
