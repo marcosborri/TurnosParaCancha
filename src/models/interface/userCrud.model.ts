@@ -8,5 +8,5 @@ export interface UserCrud {
   editUserUsername(id: number, username: string): Promise<User>;
   editUserEmail(id: number, email: string): Promise<User>;
   editUserPhonenumber(id: number, phonenumber: number): Promise<User>;
-  deleteUser(id: number): string;
+  deleteUser(id: number): Promise<void>;
 }

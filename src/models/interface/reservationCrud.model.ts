@@ -12,5 +12,5 @@ export interface ReservationCrud {
   editReservationStart(id: number, start: Date): Promise<Reservation>;
   editReservationEnd(id: number, end: Date): Promise<Reservation>;
   editReservationPaid(id: number, paid: boolean): Promise<Reservation>;
-  deleteReservation(id: number): string;
+  deleteReservation(id: number): Promise<void>;
 }

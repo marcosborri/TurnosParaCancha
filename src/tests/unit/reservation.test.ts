@@ -120,11 +120,11 @@ describe("Operaciones CRUD de mockReservation", () => {
   });
 
   it("Eliminar una reserva", async () => {
-    const id = reservation2.getId();
+    const id = reservation1.getId();
 
-    await mock.deleteReservation(id);
+    mock.deleteReservation(id);
     const reservas = await mock.getReservations();
 
-    expect(reservas.length).toBe(1);
+    expect(reservas.length).toBe(0);
   });
 });

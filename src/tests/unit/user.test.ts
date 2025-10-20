@@ -30,10 +30,10 @@ describe("Operaciones CRUD de mockUser", () => {
   });
 
   it("Obtener usuario por id", async () => {
-    const id = user2.getId();
+    const id = user1.getId();
     const usuarioEncontrado = await mock.getUser(id);
 
-    expect(usuarioEncontrado).toEqual(user2);
+    expect(usuarioEncontrado).toEqual(user1);
   });
 
   it("Editar nombre de usuario", async () => {
@@ -42,7 +42,7 @@ describe("Operaciones CRUD de mockUser", () => {
 
     const usuarioEditado = await mock.editUserUsername(id, nuevoNombre);
 
-    expect(usuarioEditado.getUsername).toBe(nuevoNombre);
+    expect(usuarioEditado.getUsername()).toBe(nuevoNombre);
   });
 
   it("Editar mail de usuario", async () => {
@@ -51,7 +51,7 @@ describe("Operaciones CRUD de mockUser", () => {
 
     const usuarioEditado = await mock.editUserEmail(id, nuevoMail);
 
-    expect(usuarioEditado.getEmail).toBe(nuevoMail);
+    expect(usuarioEditado.getEmail()).toBe(nuevoMail);
   });
 
   it("Editar numero de telefono de usuario", async () => {
@@ -60,15 +60,15 @@ describe("Operaciones CRUD de mockUser", () => {
 
     const usuarioEditado = await mock.editUserPhonenumber(id, nuevoNumero);
 
-    expect(usuarioEditado.getPhonenumber).toBe(nuevoNumero);
+    expect(usuarioEditado.getPhonenumber()).toBe(nuevoNumero);
   });
 
   it("Eliminar un usuario", async () => {
-    const id = user2.getId();
+    const id = user1.getId();
 
-    await mock.deleteUser(id);
+    mock.deleteUser(id);
     const usuarios = await mock.getUsers();
 
-    expect(usuarios.length).toBe(1);
+    expect(usuarios.length).toBe(0);
   });
 });
