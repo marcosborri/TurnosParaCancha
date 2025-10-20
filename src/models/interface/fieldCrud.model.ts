@@ -7,5 +7,5 @@ export interface FieldCrud {
   editFieldName(id: number, name: string): Promise<Field>;
   editFieldType(id: number, type: TypeField): Promise<Field>;
   editFieldPrice(id: number, price: number): Promise<Field>;
-  deleteField(id: number): string;
+  deleteField(id: number): void;
 }

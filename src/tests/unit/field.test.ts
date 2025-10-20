@@ -28,9 +28,10 @@ describe("Operaciones CRUD de mockField", () => {
   });
 
   it("Obtener Cancha por su id", async () => {
-    const id = field2.getId();
-    const canchaEncontrada = mock.getField(id);
-    expect(canchaEncontrada).toEqual(field2);
+    const id = field1.getId();
+    const canchaEncontrada = await mock.getField(id);
+
+    expect(canchaEncontrada).toEqual(field1);
   });
 
   it("Editar el nombre de la cancha", async () => {
@@ -66,9 +67,9 @@ describe("Operaciones CRUD de mockField", () => {
   it("Eliminar una cancha", async () => {
     const id = field2.getId();
 
-    await mock.deleteField(id);
-    const canchas = await mock.getFields();
+    mock.deleteField(id);
+    const canchas =  mock.getFields();
 
-    expect(canchas.length).toBe(1);
+    expect((await canchas).length).toBe(1);
   });
 });
