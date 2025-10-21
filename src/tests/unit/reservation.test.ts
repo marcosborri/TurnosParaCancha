@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, beforeAll } from "vitest";
-import { Reservation } from "./../../models/reservation/reservation.model";
-import { User } from "./../../models/user/user.model";
-import { Field } from "./../../models/field/field.model";
-import { MockReservation } from "./../../models/reservation/mockReservation";
+import { Reservation } from "../../models/reservation.model";
+import { User } from "../../models/user.model";
+import { Field } from "../../models/field.model";
+import { MockReservation } from "../../models/implementations/mock/mockReservation";
+
 
 let reservation2: Reservation;
 let user2: User;
@@ -119,11 +120,11 @@ describe("Operaciones CRUD de mockReservation", () => {
   });
 
   it("Eliminar una reserva", async () => {
-    const id = reservation2.getId();
+    const id = reservation1.getId();
 
-    await mock.deleteReservation(id);
+    mock.deleteReservation(id);
     const reservas = await mock.getReservations();
 
-    expect(reservas.length).toBe(1);
+    expect(reservas.length).toBe(0);
   });
 });

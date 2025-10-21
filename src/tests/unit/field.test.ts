@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, beforeAll } from "vitest";
-import { Field } from "./../../models/field/field.model";
-import { MockField } from "./../../models/field/mockField";
+import { Field } from "../../models/field.model";
+import { MockField } from "../../models/implementations/mock/mockField";
 let field2: Field;
 
 beforeAll(() => {
