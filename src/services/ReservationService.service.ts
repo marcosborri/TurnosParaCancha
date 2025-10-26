@@ -1,7 +1,7 @@
-import { Reservation } from "../models/reservation/reservation.model";
-import reservationRepo from "../models/reservation/mockReservation";
-import { Field } from "../models/field/field.model";
-import { User } from "../models/user/user.model";
+import { Reservation } from '../models/reservation/reservation.model';
+import reservationRepo from '../models/reservation/mockReservation';
+import { Field } from '../models/field/field.model';
+import { User } from '../models/user/user.model';
 
 export class ReservationService {
   //Obtener todas las reservas
@@ -12,13 +12,13 @@ export class ReservationService {
   //Obtener reserva por ID
   async getReservation(id: number): Promise<Reservation> {
     if (!id || id <= 0) {
-      throw new Error("ID no valido");
+      throw new Error('ID no valido');
     }
     try {
       const getReservationById = await reservationRepo.getReservation(id);
 
       if (!getReservationById) {
-        throw new Error("Reserva con ese ID no existe");
+        throw new Error('Reserva con ese ID no existe');
       }
 
       return getReservationById;
@@ -42,7 +42,7 @@ export class ReservationService {
         data.field,
         data.start,
         data.end,
-        data.paid
+        data.paid,
       );
       return await reservationRepo.addReservation(newReservation);
     } catch (error) {
@@ -50,14 +50,11 @@ export class ReservationService {
     }
   }
 
-  async editReservationField(data: {
-    id: number;
-    field: Field;
-  }): Promise<Reservation> {
+  async editReservationField(data: { id: number; field: Field }): Promise<Reservation> {
     try {
       const fieldToEdit = await reservationRepo.getReservation(data.id);
       if (!fieldToEdit) {
-        throw new Error("Cancha no se puede editar");
+        throw new Error('Cancha no se puede editar');
       }
 
       fieldToEdit.setField(data.field);
@@ -68,14 +65,11 @@ export class ReservationService {
     }
   }
 
-  async editReservationUser(data: {
-    id: number;
-    user: User;
-  }): Promise<Reservation> {
+  async editReservationUser(data: { id: number; user: User }): Promise<Reservation> {
     try {
       const userToEdit = await reservationRepo.getReservation(data.id);
       if (!userToEdit) {
-        throw new Error("Usuario no se puede editar");
+        throw new Error('Usuario no se puede editar');
       }
 
       userToEdit.setUser(data.user);
@@ -86,14 +80,11 @@ export class ReservationService {
     }
   }
 
-  async editReservationStart(data: {
-    id: number;
-    start: Date;
-  }): Promise<Reservation> {
+  async editReservationStart(data: { id: number; start: Date }): Promise<Reservation> {
     try {
       const startEdit = await reservationRepo.getReservation(data.id);
       if (!startEdit) {
-        throw new Error("Inicio de la reserva no se puede editar");
+        throw new Error('Inicio de la reserva no se puede editar');
       }
 
       startEdit.setStart(data.start);
@@ -104,14 +95,11 @@ export class ReservationService {
     }
   }
 
-  async editReservationEnd(data: {
-    id: number;
-    end: Date;
-  }): Promise<Reservation> {
+  async editReservationEnd(data: { id: number; end: Date }): Promise<Reservation> {
     try {
       const endEdit = await reservationRepo.getReservation(data.id);
       if (!endEdit) {
-        throw new Error("Finalizacion de la reserva no se puede editar");
+        throw new Error('Finalizacion de la reserva no se puede editar');
       }
 
       endEdit.setEnd(data.end);
@@ -122,14 +110,11 @@ export class ReservationService {
     }
   }
 
-  async editReservationPaid(data: {
-    id: number;
-    paid: boolean;
-  }): Promise<Reservation> {
+  async editReservationPaid(data: { id: number; paid: boolean }): Promise<Reservation> {
     try {
       const paidEdit = await reservationRepo.getReservation(data.id);
       if (!paidEdit) {
-        throw new Error("Estado de pago no se puede editar");
+        throw new Error('Estado de pago no se puede editar');
       }
 
       paidEdit.setPaid(data.paid);
@@ -142,12 +127,12 @@ export class ReservationService {
 
   async deleteReservation(id: number): Promise<Reservation> {
     if (!id || id <= 0) {
-      throw new Error("No hay ID para eliminar reserva");
+      throw new Error('No hay ID para eliminar reserva');
     }
     try {
       const reservationToDelete = await reservationRepo.getReservation(id);
       if (!reservationToDelete) {
-        throw new Error("Reserva no existente");
+        throw new Error('Reserva no existente');
       }
 
       await reservationRepo.deleteReservation(reservationToDelete.getId());

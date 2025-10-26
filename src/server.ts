@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 
 class Server {
   public app: express.Application;
@@ -11,7 +11,7 @@ class Server {
     this.routes();
   }
   middlewares() {
-    this.app.use(express.json({ limit: "150mb" }));
+    this.app.use(express.json({ limit: '150mb' }));
   }
   routes() {
     // this.app.use("/users",userRoute);

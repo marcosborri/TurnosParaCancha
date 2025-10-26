@@ -1,5 +1,5 @@
-import { request, Request, Response } from "express";
-import ReservationService from "../services/ReservationService.service";
+import { request, Request, Response } from 'express';
+import ReservationService from '../services/ReservationService.service';
 
 export class ReservationController {
   //Llamar a todas las reservar
@@ -16,14 +16,10 @@ export class ReservationController {
   async getReservationById(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) {
-      return res
-        .status(400)
-        .json({ error: "Problemas con el ID, no se encuentra" });
+      return res.status(400).json({ error: 'Problemas con el ID, no se encuentra' });
     }
     try {
-      const getReservationById = await ReservationService.getReservation(
-        Number(id)
-      );
+      const getReservationById = await ReservationService.getReservation(Number(id));
       return res.status(200).json(getReservationById);
     } catch (error) {
       return res.status(400).json({ error: error });
@@ -35,9 +31,7 @@ export class ReservationController {
     const { field, user, start, end, paid } = req.body;
 
     if (!field || !user || !start || !end || paid === undefined) {
-      return res
-        .status(400)
-        .json({ error: "Faltan datos para crear una reserva" });
+      return res.status(400).json({ error: 'Faltan datos para crear una reserva' });
     }
     try {
       const newReservation = await ReservationService.addReservation({
@@ -57,12 +51,10 @@ export class ReservationController {
   async eliminateReservation(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ error: "ID no es correcto" });
+      return res.status(400).json({ error: 'ID no es correcto' });
     }
     try {
-      const reservationDeleted = await ReservationService.deleteReservation(
-        Number(id)
-      );
+      const reservationDeleted = await ReservationService.deleteReservation(Number(id));
       return res.status(200).json(reservationDeleted);
     } catch (error) {
       return res.status(400).json({ error: error });
@@ -73,7 +65,7 @@ export class ReservationController {
   async fieldReservationEdit(req: Request, res: Response) {
     const { id, field } = req.body;
     if (!id || !field) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const fieldEdited = await ReservationService.editReservationField({
@@ -89,7 +81,7 @@ export class ReservationController {
   async userReservationEdit(req: Request, res: Response) {
     const { id, user } = req.body;
     if (!id || !user) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const userEdited = await ReservationService.editReservationUser({
@@ -105,7 +97,7 @@ export class ReservationController {
   async startReservationEdit(req: Request, res: Response) {
     const { id, start } = req.body;
     if (!id || !start) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const startEdited = await ReservationService.editReservationStart({
@@ -121,7 +113,7 @@ export class ReservationController {
   async endReservationEdit(req: Request, res: Response) {
     const { id, end } = req.body;
     if (!id || !end) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const endEdited = await ReservationService.editReservationEnd({
@@ -137,7 +129,7 @@ export class ReservationController {
   async paidReservationEdit(req: Request, res: Response) {
     const { id, paid } = req.body;
     if (!id || paid === undefined) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const paidEdited = await ReservationService.editReservationPaid({

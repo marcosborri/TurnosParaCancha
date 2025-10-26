@@ -1,5 +1,5 @@
-import { User } from "../models/user/user.model";
-import userRepo from "../models/user/mockUser";
+import { User } from '../models/user/user.model';
+import userRepo from '../models/user/mockUser';
 export class UserService {
   //Obtener todos los usuarios
   async getUsers(): Promise<User[]> {
@@ -9,7 +9,7 @@ export class UserService {
   //Obtener usuario por ID
   async getUser(id: number): Promise<User> {
     if (!id) {
-      throw new Error("El ID no es correcto");
+      throw new Error('El ID no es correcto');
     }
 
     try {
@@ -20,11 +20,7 @@ export class UserService {
     }
   }
   //Agregar usuario
-  async addUser(data: {
-    username: string;
-    email: string;
-    phonenumber: number;
-  }): Promise<User> {
+  async addUser(data: { username: string; email: string; phonenumber: number }): Promise<User> {
     try {
       const newUser = new User(0, data.username, data.email, data.phonenumber);
       return await userRepo.addUser(newUser);
@@ -38,7 +34,7 @@ export class UserService {
     try {
       const usernameToEdit = await userRepo.getUser(data.id);
       if (!usernameToEdit) {
-        throw new Error("Usuario no se encuentra");
+        throw new Error('Usuario no se encuentra');
       }
 
       usernameToEdit.setUsername(data.username);
@@ -52,7 +48,7 @@ export class UserService {
     try {
       const emailToEdit = await userRepo.getUser(data.id);
       if (!emailToEdit) {
-        throw new Error("Usuario no se encuentra");
+        throw new Error('Usuario no se encuentra');
       }
 
       emailToEdit.setEmail(data.email);
@@ -62,33 +58,28 @@ export class UserService {
     }
   }
   //Editar celular del usuario
-  async phonenumberToEdit(data: {
-    id: number;
-    phonenumber: number;
-  }): Promise<User> {
+  async phonenumberToEdit(data: { id: number; phonenumber: number }): Promise<User> {
     try {
       const phonenumberToEdit = await userRepo.getUser(data.id);
       if (!phonenumberToEdit) {
-        throw new Error("Usuario no se encuentra");
+        throw new Error('Usuario no se encuentra');
       }
 
       phonenumberToEdit.setPhonenumber(data.phonenumber);
       return phonenumberToEdit;
     } catch (error) {
-      throw new Error(
-        `Error al editar el numero de telefono del usuario ${error}`
-      );
+      throw new Error(`Error al editar el numero de telefono del usuario ${error}`);
     }
   }
   //Eliminar usuario
   async deleteUser(id: number): Promise<User> {
     if (!id) {
-      throw new Error("No hay ID para eliminar usuario");
+      throw new Error('No hay ID para eliminar usuario');
     }
     try {
       const userToDelete = await userRepo.getUser(id);
       if (!userToDelete) {
-        throw new Error("Usuario no se encuentra");
+        throw new Error('Usuario no se encuentra');
       }
       await userRepo.deleteUser(userToDelete.getId());
       return userToDelete;

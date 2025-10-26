@@ -1,6 +1,6 @@
-import { Field } from "../../field/field.model";
-import { User } from "../../user/user.model";
-import { Reservation } from "../reservation.model";
+import { Field } from '../../field/field.model';
+import { User } from '../../user/user.model';
+import { Reservation } from '../reservation.model';
 
 export interface ReservationCrud {
   getReservation(id: number): Reservation;

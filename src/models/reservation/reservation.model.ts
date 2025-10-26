@@ -1,5 +1,5 @@
-import { Field } from "../field/field.model";
-import { User } from "../user/user.model";
+import { Field } from '../field/field.model';
+import { User } from '../user/user.model';
 
 export class Reservation {
   constructor(
@@ -8,7 +8,7 @@ export class Reservation {
     private field: Field,
     private start: Date,
     private end: Date,
-    private paid: boolean
+    private paid: boolean,
   ) {}
 
   //Getters

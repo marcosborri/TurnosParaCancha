@@ -1,4 +1,4 @@
-import { Field, TypeField } from "../field.model";
+import { Field, TypeField } from '../field.model';
 
 export interface FieldCrud {
   getField(id: number): Field;

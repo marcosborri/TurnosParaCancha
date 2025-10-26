@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import UserService from "../services/UserService.service";
+import { Request, Response } from 'express';
+import UserService from '../services/UserService.service';
 
 export class UserController {
   //Llamar a todos los usuarios
@@ -17,9 +17,7 @@ export class UserController {
     const { id } = req.params;
 
     if (!id) {
-      return res
-        .status(400)
-        .json({ error: "Problemas con el ID, no se encuentra" });
+      return res.status(400).json({ error: 'Problemas con el ID, no se encuentra' });
     }
 
     try {
@@ -35,9 +33,7 @@ export class UserController {
     const { username, email, phonenumber } = req.body;
 
     if (!username || !email || !phonenumber) {
-      return res
-        .status(400)
-        .json({ error: "Faltan datos para crear un usuario" });
+      return res.status(400).json({ error: 'Faltan datos para crear un usuario' });
     }
     try {
       const newUser = await UserService.addUser({
@@ -55,9 +51,7 @@ export class UserController {
   async eliminateUser(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) {
-      return res
-        .status(400)
-        .json({ error: "Problemas con el ID, no se encuentra" });
+      return res.status(400).json({ error: 'Problemas con el ID, no se encuentra' });
     }
 
     try {
@@ -72,7 +66,7 @@ export class UserController {
   async usernameUserEdit(req: Request, res: Response) {
     const { id, username } = req.body;
     if (!id || !username) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const usernameEdited = await UserService.usernameEdit({
@@ -88,7 +82,7 @@ export class UserController {
   async emailUserEdit(req: Request, res: Response) {
     const { id, email } = req.body;
     if (!id || !email) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const emailEdited = await UserService.emailEdit({
@@ -104,7 +98,7 @@ export class UserController {
   async phonenumberUserEdit(req: Request, res: Response) {
     const { id, phonenumber } = req.body;
     if (!id || !phonenumber) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const phonenumberEdited = await UserService.phonenumberToEdit({

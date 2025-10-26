@@ -1,11 +1,11 @@
-export type TypeField = "F5" | "F6" | "F7" | "F9" | "F11";
+export type TypeField = 'F5' | 'F6' | 'F7' | 'F9' | 'F11';
 
 export class Field {
   constructor(
     protected id: number,
     protected name: string,
     protected typeField: TypeField,
-    protected price: number
+    protected price: number,
   ) {}
 
   //Getters

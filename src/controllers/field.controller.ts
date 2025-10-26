@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import FieldService from "../services/FieldService.service";
+import { Request, Response } from 'express';
+import FieldService from '../services/FieldService.service';
 export class FieldController {
   async getAllFields(req: Request, res: Response) {
     try {
@@ -14,9 +14,7 @@ export class FieldController {
     const { id } = req.params;
 
     if (!id) {
-      return res
-        .status(400)
-        .json({ error: "Problemas con el ID, no se encuentra" });
+      return res.status(400).json({ error: 'Problemas con el ID, no se encuentra' });
     }
     try {
       const field = await FieldService.getField(Number(id));
@@ -29,9 +27,7 @@ export class FieldController {
   async addNewField(req: Request, res: Response) {
     const { name, type, price } = req.body;
     if (!name || !type || !price) {
-      return res
-        .status(400)
-        .json({ error: "Faltan datos para crear una cancha" });
+      return res.status(400).json({ error: 'Faltan datos para crear una cancha' });
     }
     try {
       const newField = await FieldService.addField({
@@ -48,7 +44,7 @@ export class FieldController {
   async eliminateField(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ error: "ID no es correcto" });
+      return res.status(400).json({ error: 'ID no es correcto' });
     }
     try {
       const fieldDeleted = await FieldService.deleteField(Number(id));
@@ -61,7 +57,7 @@ export class FieldController {
   async editName(req: Request, res: Response) {
     const { id, name } = req.body;
     if (!id || !name) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const nameEdited = await FieldService.nameFieldEdit({ id, name });
@@ -74,7 +70,7 @@ export class FieldController {
   async editType(req: Request, res: Response) {
     const { id, type } = req.body;
     if (!id || !type) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const typeEdited = await FieldService.typeFieldEdit({ id, type });
@@ -87,7 +83,7 @@ export class FieldController {
   async editPrice(req: Request, res: Response) {
     const { id, price } = req.body;
     if (!id || !price) {
-      return res.status(400).json({ error: "Falta completar campos" });
+      return res.status(400).json({ error: 'Falta completar campos' });
     }
     try {
       const priceEdited = await FieldService.priceFieldEdit({ id, price });

@@ -1,5 +1,5 @@
-import { Field, TypeField } from "../models/field/field.model";
-import fieldRepo from "../models/field/mockField";
+import { Field, TypeField } from '../models/field/field.model';
+import fieldRepo from '../models/field/mockField';
 
 export class FieldService {
   //getFields
@@ -10,7 +10,7 @@ export class FieldService {
   //getFielById
   async getField(id: number): Promise<Field> {
     if (!id || id <= 0) {
-      throw new Error("El ID no es correcto");
+      throw new Error('El ID no es correcto');
     }
     try {
       const field = await fieldRepo.getField(id);
@@ -21,11 +21,7 @@ export class FieldService {
   }
 
   //addField (habria que ver bien el ID en el mockField.ts) en base de datos se crea solo cuando conectemos con una, por lo tanto no se va a necesitar validacion si es repetido
-  async addField(data: {
-    name: string;
-    type: TypeField;
-    price: number;
-  }): Promise<Field> {
+  async addField(data: { name: string; type: TypeField; price: number }): Promise<Field> {
     try {
       const newField = new Field(0, data.name, data.type, data.price);
       return await fieldRepo.addField(newField);
@@ -38,13 +34,13 @@ export class FieldService {
   async nameFieldEdit(data: { id: number; name: string }): Promise<Field> {
     try {
       if (!data.id) {
-        throw new Error("Necesito un ID para poder editar la cancha");
+        throw new Error('Necesito un ID para poder editar la cancha');
       }
 
       const fieldToEdit = await fieldRepo.getField(data.id);
 
       if (!fieldToEdit) {
-        throw new Error("Cancha no existente");
+        throw new Error('Cancha no existente');
       }
 
       fieldToEdit.setName(data.name);
@@ -61,13 +57,13 @@ export class FieldService {
   async typeFieldEdit(data: { id: number; type: TypeField }): Promise<Field> {
     try {
       if (!data.id) {
-        throw new Error("Necesito un ID para poder editar la cancha");
+        throw new Error('Necesito un ID para poder editar la cancha');
       }
 
       const typeFieldToEdit = await fieldRepo.getField(data.id);
 
       if (!typeFieldToEdit) {
-        throw new Error("Cancha no existente");
+        throw new Error('Cancha no existente');
       }
 
       typeFieldToEdit.setTypeField(data.type);
@@ -84,13 +80,13 @@ export class FieldService {
   async priceFieldEdit(data: { id: number; price: number }): Promise<Field> {
     try {
       if (!data.id) {
-        throw new Error("Necesito un ID para poder editar la cancha");
+        throw new Error('Necesito un ID para poder editar la cancha');
       }
 
       const priceFieldToEdit = await fieldRepo.getField(data.id);
 
       if (!priceFieldToEdit) {
-        throw new Error("Cancha no existente");
+        throw new Error('Cancha no existente');
       }
 
       priceFieldToEdit.setPrice(data.price);
@@ -109,7 +105,7 @@ export class FieldService {
       const fieldToDelete = await fieldRepo.getField(id);
 
       if (!fieldToDelete) {
-        throw new Error("Cancha no existente");
+        throw new Error('Cancha no existente');
       }
 
       await fieldRepo.deleteField(fieldToDelete.getId());

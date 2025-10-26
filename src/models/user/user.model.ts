@@ -1,11 +1,11 @@
-import { Reservation } from "../reservation/reservation.model";
+import { Reservation } from '../reservation/reservation.model';
 
 export class User {
   constructor(
     private id: number,
     private username: string,
     private email: string,
-    private phonenumber: number
+    private phonenumber: number,
   ) {}
 
   //Getters
