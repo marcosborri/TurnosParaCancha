@@ -1,75 +1,77 @@
 import { describe, it, expect, beforeEach, beforeAll } from "vitest";
-import { Field } from "../../models/field.model";
-import { MockField } from "../../models/implementations/mock/mockField";
-let field2: Field;
-
-beforeAll(() => {
-  field2 = new Field(2, "CanchaFutbol_B", "F7", 35000);
-});
+import mockField, { MockField } from "../../models/implementations/mock/mockField";
+import { TypeField } from "../../models/field.model";
 
 let mock: MockField;
-let field1: Field;
+let field1Id: number;
+let field2Id: number;
+
 beforeEach(async () => {
   mock = new MockField();
-  field1 = new Field(1, "CanchaFutbol_A", "F5", 30000);
-  await mock.addField(field1);
+
+  const cancha1 = await mock.addField({
+    name: "CanchaFutbol_A",
+    type: "F5",
+    price: 30000,
+  });
+
+  const cancha2 = await mock.addField({
+    name: "Cancha_1_F5",
+    type: "F5",
+    price: 10000,
+  });
+
+  field1Id = cancha1.getId();
+  field2Id = cancha2.getId();
 });
 
 describe("Operaciones CRUD de mockField", () => {
-  it("Obtener Canchas", async () => {
-    const canchas = await mock.getFields();
-    expect(canchas.length).toBeGreaterThan(0);
-  });
-
-  it("Agregar cancha", async () => {
-    const canchaAgregada = await mock.addField(field2);
+  it("Obtener canchas", async () => {
     const canchas = await mock.getFields();
     expect(canchas.length).toBe(2);
   });
 
-  it("Obtener Cancha por su id", async () => {
-    const id = field1.getId();
-    const canchaEncontrada = await mock.getField(id);
+  it("Agregar una cancha", async () => {
+    await mock.addField({
+      name: "Nueva cancha",
+      type: "F6",
+      price: 25000,
+    });
 
-    expect(canchaEncontrada).toEqual(field1);
+    const canchas = await mock.getFields();
+    expect(canchas.length).toBe(3);
   });
 
-  it("Editar el nombre de la cancha", async () => {
-    const id = field1.getId();
-    const nuevoNombre = "CanchaFutbol_C";
-
-    await mock.editFieldName(id, nuevoNombre);
-    const canchaEditada = await mock.getField(id);
-
-    expect(canchaEditada.getName()).toBe(nuevoNombre);
+  it("Obtener cancha por ID", async () => {
+    const cancha = await mock.getField(field1Id);
+    expect(cancha.getName()).toBe("CanchaFutbol_A");
   });
 
-  it("Editar el tipo de cancha", async () => {
-    const id = field1.getId();
-    const nuevoTipo = "F9";
+  it("Editar nombre", async () => {
+    await mock.editFieldName(field1Id, "Cancha Editada");
+    const cancha = await mock.getField(field1Id);
 
-    await mock.editFieldType(id, nuevoTipo);
-    const canchaEditada = await mock.getField(id);
-
-    expect(canchaEditada.getTypeField()).toBe(nuevoTipo);
+    expect(cancha.getName()).toBe("Cancha Editada");
   });
 
-  it("Editar el precio de la cancha", async () => {
-    const id = field1.getId();
-    const nuevoPrecio = 28000;
+  it("Editar tipo", async () => {
+    await mock.editFieldType(field1Id, "F7" as TypeField);
+    const cancha = await mock.getField(field1Id);
 
-    await mock.editFieldPrice(id, nuevoPrecio);
-    const canchaEditada = await mock.getField(id);
-
-    expect(canchaEditada.getPrice()).toBe(nuevoPrecio);
+    expect(cancha.getTypeField()).toBe("F7");
   });
 
-  it("Eliminar una cancha", async () => {
-    const id = field2.getId();
+  it("Editar precio", async () => {
+    await mock.editFieldPrice(field1Id, 28000);
+    const cancha = await mock.getField(field1Id);
 
-    mock.deleteField(id);
-    const canchas =  mock.getFields();
+    expect(cancha.getPrice()).toBe(28000);
+  });
 
+  it("Eliminar cancha", async () => {
+    mock.deleteField(field2Id);
+
+    const canchas = mock.getFields();
     expect((await canchas).length).toBe(1);
   });
 });

@@ -1,16 +1,13 @@
-import { describe, it, expect, beforeAll } from "vitest";
-import FieldService from './../../services/FieldService.service';
-import { Field } from "../../models/field.model";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
+import  FieldService  from "../../services/FieldService.service";
 import fieldRepo from "../../models/implementations/mock/mockField";
-import {TypeField} from "../../models/field.model"
-
-let field1: Field
 
 
 beforeAll(async () => {
-  field1 = new Field(1, "Cancha_A", "F5", 30000);
-  await fieldRepo.addField(field1)
-});
+  await fieldRepo.addField({name: "Cancha_A", type: "F5", price: 30000})
+})
+
+
 
 describe('Reglas de servicio - fieldService', ()=>{
     it('El id es incorrecto', async () => {
@@ -27,8 +24,7 @@ describe('Reglas de servicio - fieldService', ()=>{
     });
 
     it("Agrega una nueva cancha", async () => {
-        const data = { name: "Cancha_C", type: "F9", price: 40000 };
-        const canchaAgregada = await FieldService.addField(data);
+        const canchaAgregada = await FieldService.addField({name: "Cancha_C", type: "F11", price: 56000});
         expect(canchaAgregada.getName()).toBe("Cancha_C");
     });
 
