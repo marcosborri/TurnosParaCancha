@@ -27,9 +27,9 @@ export class MockField implements FieldCrud {
       resolve(this.container);
     });
   }
-  addField(data: { name: string; type: TypeField; price: number }): Promise<Field> {
+  addField(data: { name: string; type: TypeField;}): Promise<Field> {
     return new Promise<Field>((resolve) => {
-      const field = FieldFactory.create(data.name, data.type, data.price);
+      const field = FieldFactory.create(data.name, data.type);
       field.setId(this.id++);
       this.container.push(field);
       resolve(field)

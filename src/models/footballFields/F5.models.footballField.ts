@@ -2,8 +2,8 @@ import { Field } from "../field.model";
 
 
 export class Football5 extends Field {
-  constructor(name: string, price: number) {
-    super(0, name, "F5", price);
+  constructor(name: string) {
+    super(0, name, "F5", 1500);
   }
 
 

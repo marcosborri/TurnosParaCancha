@@ -11,7 +11,7 @@ export class FieldController {
   }
 
   async getFieldById(req: Request, res: Response) {
-    const { id } = req.params;
+    const  id  = req.params.id;
 
     if (!id) {
       return res
@@ -22,13 +22,15 @@ export class FieldController {
       const field = await FieldService.getField(Number(id));
       return res.status(200).json(field);
     } catch (error) {
-      return res.status(400).json({ error: error });
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message});
+      }
     }
   }
 
   async addNewField(req: Request, res: Response) {
-    const { name, type, price } = req.body;
-    if (!name || !type || !price) {
+    const { name, type} = req.body;
+    if (!name || !type) {
       return res
         .status(400)
         .json({ error: "Faltan datos para crear una cancha" });
@@ -37,7 +39,6 @@ export class FieldController {
       const newField = await FieldService.addField({
         name: name,
         type: type,
-        price: price,
       });
       return res.status(201).json(newField);
     } catch (error) {
@@ -46,15 +47,17 @@ export class FieldController {
   }
 
   async eliminateField(req: Request, res: Response) {
-    const { id } = req.params;
+    const  id  = req.params.id;
     if (!id) {
       return res.status(400).json({ error: "ID no es correcto" });
     }
     try {
-      const fieldDeleted = await FieldService.deleteField(Number(id));
-      return res.status(200).json(fieldDeleted);
+      FieldService.deleteField(Number(id));
+      return res.status(200).json({message: `Field with ${id} eliminated`});
     } catch (error) {
-      return res.status(400).json({ error: error });
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message});
+      }
     }
   }
 
