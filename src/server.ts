@@ -1,5 +1,7 @@
 import express from "express";
-import fieldRoutes from "./routes/field.routes";
+import indexRoutes from "./routes/index";
+import { reservationSubject } from "./models/observer/reservation.interface";
+import { ObserverMessage } from "./models/observer/observerMessage.interface";
 
 class Server {
   public app: express.Application;
@@ -8,6 +10,8 @@ class Server {
   constructor(port: number) {
     this.port = port;
     this.app = express();
+    reservationSubject.subscribe(new ObserverMessage());
+
     this.middlewares();
     this.routes();
   }
@@ -18,11 +22,8 @@ class Server {
     this.app.get("/", (req, res) => {
       res.send("on port 3000");
     });
-    this.app.use("/fields", fieldRoutes)
-    // this.app.use("/users",userRoute);
-    // this.app.use( "/categories",categoryRoute);
-    // this.app.use("/products",productRouote)
-    // this.app.use("/restart",restartRoute);
+
+    this.app.use("/", indexRoutes);
   }
   start(callback: () => void) {
     this.app.listen(this.port, callback);

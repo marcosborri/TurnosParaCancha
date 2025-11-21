@@ -1,5 +1,7 @@
 import { Field, TypeField } from "../models/field.model";
 import fieldRepo from "../models/implementations/mock/mockField";
+import reservationRepo from "../models/implementations/mock/mockReservation";
+import { reservationSubject } from "../models/observer/reservation.interface";
 
 export class FieldService {
   //getFields
@@ -27,8 +29,7 @@ export class FieldService {
     price: number;
   }): Promise<Field> {
     try {
-      const newField = new Field(0, data.name, data.type, data.price);
-      return await fieldRepo.addField(newField);
+      return await fieldRepo.addField(data);
     } catch (error) {
       throw new Error(`Error al agregar la cancha ${error}`);
     }
@@ -49,7 +50,7 @@ export class FieldService {
 
       fieldToEdit.setName(data.name);
 
-      await fieldRepo.editFieldName(data.id, data.name);
+      await fieldRepo.nameFieldEdit({ id: data.id, name: data.name });
 
       return fieldToEdit;
     } catch (error) {
@@ -72,7 +73,7 @@ export class FieldService {
 
       typeFieldToEdit.setTypeField(data.type);
 
-      await fieldRepo.editFieldType(data.id, data.type);
+      await fieldRepo.typeFieldEdit({ id: data.id, type: data.type });
 
       return typeFieldToEdit;
     } catch (error) {
@@ -95,7 +96,7 @@ export class FieldService {
 
       priceFieldToEdit.setPrice(data.price);
 
-      await fieldRepo.editFieldPrice(data.id, data.price);
+      await fieldRepo.priceFieldEdit({ id: data.id, price: data.price });
 
       return priceFieldToEdit;
     } catch (error) {
@@ -104,7 +105,7 @@ export class FieldService {
   }
 
   //deleteField
-  async deleteField(id: number): Promise<Field> {
+  async deleteField(id: number): Promise<void> {
     try {
       const fieldToDelete = await fieldRepo.getField(id);
 
@@ -112,13 +113,24 @@ export class FieldService {
         throw new Error("Cancha no existente");
       }
 
-      await fieldRepo.deleteField(fieldToDelete.getId());
+      // Buscar todas las reservas asociadas a esta cancha
+      const reservations = await reservationRepo.getReservations();
 
-      return fieldToDelete;
+      const toDelete = reservations.filter((r) => r.getField().getId() === id);
+
+      // 🔥 Borrar reservas y notificar
+      for (const reservation of toDelete) {
+        await reservationRepo.deleteReservation(reservation.getId());
+        reservationSubject.notify(
+          `La reserva ${reservation.getId()} se cancelo porque se eliminó la cancha`
+        );
+      }
+
+      // Finalmente borrar la cancha
+      await fieldRepo.deleteField(id);
     } catch (error) {
       throw new Error(`Error al eliminar la cancha ${error}`);
     }
   }
 }
-
 export default new FieldService();

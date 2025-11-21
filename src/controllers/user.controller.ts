@@ -75,8 +75,8 @@ export class UserController {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const usernameEdited = await UserService.usernameEdit({
-        id,
+      const usernameEdited = await UserService.editUserUsername({
+        id: Number(id),
         username,
       });
       return res.status(200).json(usernameEdited);
@@ -91,8 +91,8 @@ export class UserController {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const emailEdited = await UserService.emailEdit({
-        id,
+      const emailEdited = await UserService.editUserEmail({
+        id: Number(id),
         email,
       });
       return res.status(200).json(emailEdited);
@@ -107,8 +107,8 @@ export class UserController {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const phonenumberEdited = await UserService.phonenumberToEdit({
-        id,
+      const phonenumberEdited = await UserService.editUserPhonenumber({
+        id: Number(id),
         phonenumber,
       });
       return res.status(200).json(phonenumberEdited);

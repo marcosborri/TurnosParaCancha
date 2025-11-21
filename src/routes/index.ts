@@ -7,3 +7,5 @@ const router = Router();
 router.use("/fields", fieldRoutes);
 router.use("/reservations", reservationRoutes);
 router.use("/users", userRoutes);
+
+export default router;

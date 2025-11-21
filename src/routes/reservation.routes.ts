@@ -1,12 +1,23 @@
 import { Router } from "express";
-import reservationController from "../controllers/reservation.controller";
+import ReservationController from "../controllers/reservation.controller";
+
+// Importás servicios, NO el repo
+import reservationService from "../services/ReservationService.service";
+import userService from "../services/UserService.service";
+import fieldService from "../services/FieldService.service";
+
+const reservationController = new ReservationController(
+  reservationService,
+  userService,
+  fieldService
+);
 
 const routes = Router();
 
 routes.get("/", reservationController.getAllReservations);
 routes.get("/:id", reservationController.getReservationById);
 routes.post("/", reservationController.addNewReservation);
-routes.post("/:id", reservationController.eliminateReservation);
+routes.delete("/:id", reservationController.eliminateReservation);
 routes.put("/field", reservationController.fieldReservationEdit);
 routes.put("/user", reservationController.userReservationEdit);
 routes.put("/start", reservationController.startReservationEdit);
