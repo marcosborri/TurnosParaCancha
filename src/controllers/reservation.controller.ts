@@ -32,19 +32,19 @@ export class ReservationController {
 
   //Llamar reserva por ID
   getReservationById = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const  id  = req.params.id;
     if (!id) {
       return res
         .status(400)
         .json({ error: "Problemas con el ID, no se encuentra" });
     }
     try {
-      const getReservationById = await this.reservationService.getReservation(
-        Number(id)
-      );
+      const getReservationById = await this.reservationService.getReservation(Number(id));
       return res.status(200).json(getReservationById);
     } catch (error) {
-      return res.status(400).json({ error: error });
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message});
+      }
     }
   };
 
@@ -92,8 +92,8 @@ export class ReservationController {
       );
       const saved = await this.reservationService.addReservation(reservation);
       return res.status(201).json(saved);
-    } catch (error) {
-      return res.status(400).json({ error: error });
+    } catch (error: any) {
+      return res.status(400).json({ error: error.message });
     }
   };
 
@@ -120,7 +120,8 @@ export class ReservationController {
 
   //Editar campos
   fieldReservationEdit = async (req: Request, res: Response) => {
-    const { id, field } = req.body;
+    const id = req.params.id;
+    const field = req.body.field;
     if (!id || !field) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
@@ -137,7 +138,8 @@ export class ReservationController {
   };
 
   userReservationEdit = async (req: Request, res: Response) => {
-    const { id, user } = req.body;
+    const id = req.params.id;
+    const user = req.body.user;
     if (!id || !user) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
@@ -154,7 +156,8 @@ export class ReservationController {
   };
 
   startReservationEdit = async (req: Request, res: Response) => {
-    const { id, start } = req.body;
+    const id = req.params.id;
+    const start = req.body.start;
     if (!id || !start) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
@@ -170,7 +173,8 @@ export class ReservationController {
   };
 
   endReservationEdit = async (req: Request, res: Response) => {
-    const { id, end } = req.body;
+    const id = req.params.id;
+    const end = req.body.end;
     if (!id || !end) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
@@ -186,7 +190,8 @@ export class ReservationController {
   };
 
   paidReservationEdit = async (req: Request, res: Response) => {
-    const { id, paid } = req.body;
+    const id = req.params.id;
+    const paid = req.body.paid;
     if (!id || paid === undefined) {
       return res.status(400).json({ error: "Falta completar campos" });
     }

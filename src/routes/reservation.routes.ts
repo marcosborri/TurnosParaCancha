@@ -18,10 +18,10 @@ routes.get("/", reservationController.getAllReservations);
 routes.get("/:id", reservationController.getReservationById);
 routes.post("/", reservationController.addNewReservation);
 routes.delete("/:id", reservationController.eliminateReservation);
-routes.put("/field", reservationController.fieldReservationEdit);
-routes.put("/user", reservationController.userReservationEdit);
-routes.put("/start", reservationController.startReservationEdit);
-routes.put("/end", reservationController.endReservationEdit);
-routes.put("/paid", reservationController.paidReservationEdit);
+routes.put("/field/:id", reservationController.fieldReservationEdit);
+routes.put("/user/:id", reservationController.userReservationEdit);
+routes.put("/start/:id", reservationController.startReservationEdit);
+routes.put("/end/:id", reservationController.endReservationEdit);
+routes.put("/paid/:id", reservationController.paidReservationEdit);
 
 export default routes;
