@@ -28,26 +28,8 @@ export class ReservationService {
   }
 
   //Agregar una reserva nueva
-  async addReservation(data: {
-    field: Field;
-    user: User;
-    start: Date;
-    end: Date;
-    paid: boolean;
-  }): Promise<Reservation> {
-    try {
-      const newReservation = new Reservation(
-        0,
-        data.user,
-        data.field,
-        data.start,
-        data.end,
-        data.paid
-      );
-      return await reservationRepo.addReservation(newReservation);
-    } catch (error) {
-      throw new Error(`Error al agregar la reserva ${error}`);
-    }
+  async addReservation(reservation: Reservation): Promise<Reservation> {
+    return reservationRepo.addReservation(reservation);
   }
 
   async editReservationField(data: {
@@ -61,7 +43,7 @@ export class ReservationService {
       }
 
       fieldToEdit.setField(data.field);
-      await reservationRepo.editReservationField(data.id, data.field);
+      await reservationRepo.editReservationField(data);
       return fieldToEdit;
     } catch (error) {
       throw new Error(`Error al editar la cancha de la reserva ${error}`);
@@ -79,7 +61,7 @@ export class ReservationService {
       }
 
       userToEdit.setUser(data.user);
-      await reservationRepo.editReservationUser(data.id, data.user);
+      await reservationRepo.editReservationUser(data);
       return userToEdit;
     } catch (error) {
       throw new Error(`Error al editar usuario de la reserva ${error}`);
@@ -97,7 +79,7 @@ export class ReservationService {
       }
 
       startEdit.setStart(data.start);
-      await reservationRepo.editReservationStart(data.id, data.start);
+      await reservationRepo.editReservationStart(data);
       return startEdit;
     } catch (error) {
       throw new Error(`Error al editar el inicio de la reserva ${error}`);
@@ -115,7 +97,7 @@ export class ReservationService {
       }
 
       endEdit.setEnd(data.end);
-      await reservationRepo.editReservationEnd(data.id, data.end);
+      await reservationRepo.editReservationEnd(data);
       return endEdit;
     } catch (error) {
       throw new Error(`Error al editar la finalizacion de la reserva ${error}`);
@@ -133,7 +115,7 @@ export class ReservationService {
       }
 
       paidEdit.setPaid(data.paid);
-      await reservationRepo.editReservationPaid(data.id, data.paid);
+      await reservationRepo.editReservationPaid(data);
       return paidEdit;
     } catch (error) {
       throw new Error(`Error al editar el estado de pago ${error}`);

@@ -1,100 +1,58 @@
 import { User } from "../models/user.model";
 import userRepo from "../models/implementations/mock/mockUser";
-export class UserService {
-  //Obtener todos los usuarios
+import reservationRepo from "../models/implementations/mock/mockReservation";
+import { UserCrud } from "../models/interface/userCrud.model";
+import { reservationSubject } from "../models/observer/reservation.interface";
+
+export class UserService implements UserCrud {
   async getUsers(): Promise<User[]> {
     return userRepo.getUsers();
   }
 
-  //Obtener usuario por ID
   async getUser(id: number): Promise<User> {
-    if (!id) {
-      throw new Error("El ID no es correcto");
-    }
-
-    try {
-      const user = await userRepo.getUser(id);
-      return user;
-    } catch (error) {
-      throw new Error(`No hay usuario con ese ID ${error}`);
-    }
+    return userRepo.getUser(id);
   }
-  //Agregar usuario
+
   async addUser(data: {
     username: string;
     email: string;
-    phonenumber: number;
+    phonenumber: string;
   }): Promise<User> {
-    try {
-      const newUser = new User(0, data.username, data.email, data.phonenumber);
-      return await userRepo.addUser(newUser);
-    } catch (error) {
-      throw new Error(`Error al crear usuario nuevo ${error}`);
-    }
+    return userRepo.addUser(data);
   }
 
-  //Editar nombre del usuario
-  async usernameEdit(data: { id: number; username: string }): Promise<User> {
-    try {
-      const usernameToEdit = await userRepo.getUser(data.id);
-      if (!usernameToEdit) {
-        throw new Error("Usuario no se encuentra");
-      }
-
-      usernameToEdit.setUsername(data.username);
-      return usernameToEdit;
-    } catch (error) {
-      throw new Error(`Error al editar el nombre de usuario ${error}`);
-    }
-  }
-  //Editar email del usuario
-  async emailEdit(data: { id: number; email: string }): Promise<User> {
-    try {
-      const emailToEdit = await userRepo.getUser(data.id);
-      if (!emailToEdit) {
-        throw new Error("Usuario no se encuentra");
-      }
-
-      emailToEdit.setEmail(data.email);
-      return emailToEdit;
-    } catch (error) {
-      throw new Error(`Error al editar el email del usuario ${error}`);
-    }
-  }
-  //Editar celular del usuario
-  async phonenumberToEdit(data: {
+  async editUserUsername(data: {
     id: number;
-    phonenumber: number;
+    username: string;
   }): Promise<User> {
-    try {
-      const phonenumberToEdit = await userRepo.getUser(data.id);
-      if (!phonenumberToEdit) {
-        throw new Error("Usuario no se encuentra");
-      }
-
-      phonenumberToEdit.setPhonenumber(data.phonenumber);
-      return phonenumberToEdit;
-    } catch (error) {
-      throw new Error(
-        `Error al editar el numero de telefono del usuario ${error}`
-      );
-    }
+    return userRepo.editUserUsername(data);
   }
-  //Eliminar usuario
-  async deleteUser(id: number): Promise<User> {
-    if (!id) {
-      throw new Error("No hay ID para eliminar usuario");
+
+  async editUserEmail(data: { id: number; email: string }): Promise<User> {
+    return userRepo.editUserEmail(data);
+  }
+
+  async editUserPhonenumber(data: {
+    id: number;
+    phonenumber: string;
+  }): Promise<User> {
+    return userRepo.editUserPhonenumber(data);
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    const reservations = await reservationRepo.getReservations();
+    const subject = reservationSubject;
+
+    const toDelete = reservations.filter((r) => r.getUser().getId() === id);
+
+    // Borrar reservas y notificar
+    for (const reservation of toDelete) {
+      await reservationRepo.deleteReservation(reservation.getId());
+      subject.notify(`La reserva ${reservation.getId()} se liberó`);
     }
-    try {
-      const userToDelete = await userRepo.getUser(id);
-      if (!userToDelete) {
-        throw new Error("Usuario no se encuentra");
-      }
-      await userRepo.deleteUser(userToDelete.getId());
-      return userToDelete;
-    } catch (error) {
-      throw new Error(`Error al eliminar usuario ${error}`);
-    }
+
+    // Ahora sí borrar usuario
+    await userRepo.deleteUser(id);
   }
 }
 

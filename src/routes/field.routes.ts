@@ -6,7 +6,7 @@ const routes = Router();
 routes.get("/", fieldController.getAllFields);
 routes.get("/:id", fieldController.getFieldById);
 routes.post("/", fieldController.addNewField);
-routes.post("/:id", fieldController.eliminateField);
+routes.delete("/:id", fieldController.eliminateField);
 routes.put("/name", fieldController.editName);
 routes.put("/type", fieldController.editType);
 routes.put("/price", fieldController.editPrice);

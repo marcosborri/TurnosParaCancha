@@ -1,11 +1,10 @@
-
 export class User {
   constructor(
     private id: number,
     private username: string,
     private email: string,
-    private phonenumber: number
-  ) { }
+    private phonenumber: string
+  ) {}
 
   //Getters
   public getId(): number {
@@ -20,7 +19,7 @@ export class User {
     return this.email;
   }
 
-  public getPhonenumber(): number {
+  public getPhonenumber(): string {
     return this.phonenumber;
   }
 
@@ -38,7 +37,7 @@ export class User {
     this.email = email;
   }
 
-  public setPhonenumber(phone: number) {
+  public setPhonenumber(phone: string) {
     this.phonenumber = phone;
   }
 }
