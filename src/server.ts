@@ -1,7 +1,5 @@
 import express from "express";
-import indexRoutes from "./routes/index";
-import { reservationSubject } from "./models/observer/reservation.interface";
-import { ObserverMessage } from "./models/observer/observerMessage.interface";
+import indexRoutes from './routes/index'
 
 class Server {
   public app: express.Application;
@@ -10,7 +8,6 @@ class Server {
   constructor(port: number) {
     this.port = port;
     this.app = express();
-    reservationSubject.subscribe(new ObserverMessage());
 
     this.middlewares();
     this.routes();

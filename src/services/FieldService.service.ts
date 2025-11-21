@@ -23,34 +23,26 @@ export class FieldService {
   }
 
   //addField (habria que ver bien el ID en el mockField.ts) en base de datos se crea solo cuando conectemos con una, por lo tanto no se va a necesitar validacion si es repetido
-  async addField(data: {
-    name: string;
-    type: TypeField;
-    price: number;
-  }): Promise<Field> {
-    try {
-      return await fieldRepo.addField(data);
-    } catch (error) {
-      throw new Error(`Error al agregar la cancha ${error}`);
-    }
+    async addField(data: { name: string; type: TypeField;}): Promise<Field> {
+    return fieldRepo.addField(data);
   }
 
   //Editar nombre
-  async nameFieldEdit(data: { id: number; name: string }): Promise<Field> {
+  async nameFieldEdit(id: number, name: string ): Promise<Field> {
     try {
-      if (!data.id) {
+      if (!id) {
         throw new Error("Necesito un ID para poder editar la cancha");
       }
 
-      const fieldToEdit = await fieldRepo.getField(data.id);
+      const fieldToEdit = await fieldRepo.getField(id);
 
       if (!fieldToEdit) {
         throw new Error("Cancha no existente");
       }
 
-      fieldToEdit.setName(data.name);
+      fieldToEdit.setName(name);
 
-      await fieldRepo.nameFieldEdit({ id: data.id, name: data.name });
+      await fieldRepo.editFieldName(id, name);
 
       return fieldToEdit;
     } catch (error) {
