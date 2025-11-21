@@ -14,7 +14,7 @@ export class UserController {
 
   //Llamar a usuario por ID
   async getUserById(req: Request, res: Response) {
-    const { id } = req.params;
+    const id = req.params.id;
 
     if (!id) {
       return res
@@ -26,7 +26,9 @@ export class UserController {
       const getUser = await UserService.getUser(Number(id));
       return res.status(200).json(getUser);
     } catch (error) {
-      return res.status(400).json({ error: error });
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message});
+      }
     }
   }
 
@@ -70,7 +72,8 @@ export class UserController {
 
   //Editar campos
   async usernameUserEdit(req: Request, res: Response) {
-    const { id, username } = req.body;
+    const id = req.params.id;
+    const username = req.body.username;
     if (!id || !username) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
@@ -86,7 +89,8 @@ export class UserController {
   }
 
   async emailUserEdit(req: Request, res: Response) {
-    const { id, email } = req.body;
+    const id = req.params.id;
+    const email = req.body.email;
     if (!id || !email) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
@@ -102,7 +106,8 @@ export class UserController {
   }
 
   async phonenumberUserEdit(req: Request, res: Response) {
-    const { id, phonenumber } = req.body;
+    const id = req.params.id;
+    const phonenumber = req.body.phonenumber;
     if (!id || !phonenumber) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
