@@ -78,7 +78,7 @@ export class ReservationController {
         this.addObserver(observer);
 
         return res.status(400).json({
-          message: "Hour reserved. We will contact you if reserve free",
+          message: "Hour reserved. We will contact you when the reserve is free",
         });
       }
 
