@@ -28,73 +28,20 @@ export class FieldService {
   }
 
   //Editar nombre
-  async nameFieldEdit(id: number, name: string ): Promise<Field> {
-    try {
-      if (!id) {
-        throw new Error("Necesito un ID para poder editar la cancha");
-      }
-
-      const fieldToEdit = await fieldRepo.getField(id);
-
-      if (!fieldToEdit) {
-        throw new Error("Cancha no existente");
-      }
-
-      fieldToEdit.setName(name);
-
-      await fieldRepo.editFieldName(id, name);
-
-      return fieldToEdit;
-    } catch (error) {
-      throw new Error(`Error al editar la cancha ${error}`);
-    }
+  editFieldName(id: number, name: string ): Promise<Field> {
+    return fieldRepo.editFieldName(id, name)
   }
 
   //Editar Tipo de cancha
-  async typeFieldEdit(data: { id: number; type: TypeField }): Promise<Field> {
-    try {
-      if (!data.id) {
-        throw new Error("Necesito un ID para poder editar la cancha");
-      }
-
-      const typeFieldToEdit = await fieldRepo.getField(data.id);
-
-      if (!typeFieldToEdit) {
-        throw new Error("Cancha no existente");
-      }
-
-      typeFieldToEdit.setTypeField(data.type);
-
-      await fieldRepo.typeFieldEdit({ id: data.id, type: data.type });
-
-      return typeFieldToEdit;
-    } catch (error) {
-      throw new Error(`Error al editar el tipo de la cancha ${error}`);
-    }
-  }
+  editTypeField(id: number, type: TypeField): Promise<Field> {
+    return fieldRepo.editFieldType(id, type)
+}
 
   //Editar precio de la cancha
-  async priceFieldEdit(data: { id: number; price: number }): Promise<Field> {
-    try {
-      if (!data.id) {
-        throw new Error("Necesito un ID para poder editar la cancha");
-      }
-
-      const priceFieldToEdit = await fieldRepo.getField(data.id);
-
-      if (!priceFieldToEdit) {
-        throw new Error("Cancha no existente");
-      }
-
-      priceFieldToEdit.setPrice(data.price);
-
-      await fieldRepo.priceFieldEdit({ id: data.id, price: data.price });
-
-      return priceFieldToEdit;
-    } catch (error) {
-      throw new Error(`Error al editar el precio de la cancha ${error}`);
-    }
+  async editFieldPrice(id: number, price: number ): Promise<Field> {
+    return fieldRepo.editFieldPrice(id, price)
   }
+  
 
   //deleteField
   async deleteField(id: number): Promise<void> {
