@@ -1,20 +1,18 @@
 import { FieldCrud } from "../../interface/fieldCrud.model";
 import { Field, TypeField } from "../../field.model";
 import { FieldFactory } from "../../../factories/field.factory";
-import fs from 'fs/promises';
+import { saveData, loadData } from '../../../utils/jsonFunctions.utils'
 
 export class MockField implements FieldCrud {
-  protected container: Array<Field>;
-  protected id: number;
-  constructor() {
-    this.id = 1,
-    this.container = new Array<Field>
-  }
+  protected filePath: string = 'src/database/fields.json'
+  constructor() {}
+
 
   getField(id: number): Promise<Field> {
-    return new Promise<Field>((resolve, reject) => {
-      const result = this.container.find((field: Field) => {
-        return field.getId() === id;
+    return new Promise<Field>(async (resolve, reject) => {
+      const data = await loadData(this.filePath)
+      const result = data.find((field: any) => {
+        return field.id === id;
       });
       if (!result) {
         reject(new Error(`Field with id:${id} doesnt exist`));
@@ -24,77 +22,88 @@ export class MockField implements FieldCrud {
     });
   }
   getFields(): Promise<Array<Field>> {
-    return new Promise<Array<Field>>((resolve) => {
-      resolve(this.container);
+    return new Promise<Array<Field>>(async (resolve) => {
+      const data = await loadData(this.filePath)
+      resolve(data);
     });
   }
-  addField(data: { name: string; type: TypeField;}): Promise<Field> {
-    return new Promise<Field>((resolve) => {
+  addField(data: { name: string; type: TypeField; }): Promise<Field> {
+    return new Promise<Field>( async (resolve) => {
+      const dataJson = await loadData(this.filePath)
       const field = FieldFactory.create(data.name, data.type);
-      field.setId(this.id++);
-      this.container.push(field);
-      resolve(field)
-    });
+      let id = dataJson.length + 1
 
+      while (dataJson.find((f: any) => f.id === id)) {
+        id++
+      }
+
+      field.setId(id++);
+      dataJson.push(field)
+      saveData(dataJson, this.filePath)
+      resolve(dataJson)
+    });
+    
   }
   editFieldName(id: number, name: string): Promise<Field> {
-    return new Promise<Field>((resolve, reject) => {
-      const fieldFound = this.container.find((field: Field) => field.getId() === id);
+    return new Promise<Field>( async (resolve, reject) => {
+      const data = await loadData(this.filePath)
+      const fieldFound = data.find((field: any) => field.id === id);
       if (!fieldFound) {
         reject(new Error(`Field with id:${id} doesnt exist`))
       } else {
-        fieldFound.setName(name);
+        fieldFound.name = name;
+        saveData(data, this.filePath)
         resolve(fieldFound);
       }
     })
   }
   editFieldType(id: number, type: TypeField): Promise<Field> {
-    return new Promise<Field>((resolve, reject) => {
-      const fieldFound = this.container.find((field: Field) => field.getId() === id);
+    return new Promise<Field>(async(resolve, reject) => {
+      const data = await loadData(this.filePath)
+      const fieldFound = data.find((field: any) => field.id === id);
       if (!fieldFound) {
         reject(new Error(`Field with id:${id} doesnt exist`))
       } else {
-        fieldFound.setTypeField(type);
+        fieldFound.type = type;
+        saveData(data, this.filePath)
         resolve(fieldFound);
       }
     });
   }
 
-  editFieldPrice(id: number, price: number ): Promise<Field> {
-    return new Promise<Field>((resolve, reject) => {
-      const fieldFound = this.container.find(
-        (field: Field) => field.getId() === id
-      );
+  editFieldPrice(id: number, price: number): Promise<Field> {
+    return new Promise<Field>(async(resolve, reject) => {
+      const data = await loadData(this.filePath)
+      const fieldFound = data.find((field: any) => field.id === id);
       if (!fieldFound) {
-        reject(new Error(`Field with id:${id} doesnt exist`));
+        reject(new Error(`Field with id:${id} doesnt exist`))
       } else {
-        fieldFound.setPrice(price);
+        fieldFound.price = price;
+        saveData(data, this.filePath)
         resolve(fieldFound);
       }
     });
   }
   deleteField(id: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const index = this.container.findIndex((field: Field) => field.getId() === id)
+    return new Promise(async (resolve, reject) => {
+      const data = await loadData(this.filePath)
+      const index = data.findIndex((field: any) => field.id === id)
       if (index == -1) {
         reject(new Error(`Field with id:${id} doesnt exist`));
       } else {
-        this.container.splice(index, 1);
+        data.splice(index, 1);
+        saveData(data, this.filePath)
         resolve();
       }
     });
   }
 
 
-async saveData(data: Array<Field>, file: string) {
-  const jsonData = JSON.stringify(data, null, 2);
-  try {
-    await fs.writeFile(file, jsonData);
-  } catch (err) {
-    console.error(err);
-  }
 }
 
-}
+
+
+
+
 
 export default new MockField();
