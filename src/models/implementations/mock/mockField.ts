@@ -1,13 +1,14 @@
 import { FieldCrud } from "../../interface/fieldCrud.model";
 import { Field, TypeField } from "../../field.model";
 import { FieldFactory } from "../../../factories/field.factory";
+import fs from 'fs/promises';
 
 export class MockField implements FieldCrud {
   protected container: Array<Field>;
   protected id: number;
   constructor() {
     this.id = 1,
-      this.container = new Array<Field>
+    this.container = new Array<Field>
   }
 
   getField(id: number): Promise<Field> {
@@ -83,6 +84,17 @@ export class MockField implements FieldCrud {
       }
     });
   }
+
+
+async saveData(data: Array<Field>, file: string) {
+  const jsonData = JSON.stringify(data, null, 2);
+  try {
+    await fs.writeFile(file, jsonData);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 }
 
 export default new MockField();
