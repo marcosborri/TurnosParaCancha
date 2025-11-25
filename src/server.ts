@@ -1,5 +1,6 @@
 import express from "express";
-import indexRoutes from './routes/index'
+import indexRoutes from "./routes/index";
+import { setupSwagger } from "./swagger.";
 
 class Server {
   public app: express.Application;
@@ -8,6 +9,7 @@ class Server {
   constructor(port: number) {
     this.port = port;
     this.app = express();
+    setupSwagger(this.app);
 
     this.middlewares();
     this.routes();
