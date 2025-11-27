@@ -20,6 +20,42 @@ export class ReservationController {
     this.subject.subscribe(observer);
   }
 
+  // Helpers to safely extract values from instances or plain objects
+  private getFieldIdFromReservation(r: any): number | undefined {
+    try {
+      if (!r) return undefined;
+      if (typeof r.getField === "function") return r.getField().getId();
+      if (r.field) {
+        return r.field.id ?? r.field._id ?? undefined;
+      }
+      return r.fieldId ?? undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  private getStartFromReservation(r: any): Date | undefined {
+    try {
+      if (!r) return undefined;
+      if (typeof r.getStart === "function") return r.getStart();
+      const val = r.start ?? r.startDate;
+      return val ? new Date(val) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  private getEndFromReservation(r: any): Date | undefined {
+    try {
+      if (!r) return undefined;
+      if (typeof r.getEnd === "function") return r.getEnd();
+      const val = r.end ?? r.endDate;
+      return val ? new Date(val) : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
   //Llamar a todas las reservar
   getAllReservations = async (req: Request, res: Response) => {
     try {
@@ -52,25 +88,45 @@ export class ReservationController {
   addNewReservation = async (req: Request, res: Response) => {
     const { field, user, start, end, paid } = req.body;
 
-    if (!field || !user || !start || !end || paid === undefined) {
+    if (field === undefined || user === undefined || !start || !end || paid === undefined) {
       return res
         .status(400)
         .json({ error: "Faltan datos para crear una reserva" });
     }
 
+    // Accept either id or object with id
+    const parseId = (v: any) => {
+      if (typeof v === "number") return v;
+      if (typeof v === "string" && v.trim() !== "") return Number(v);
+      if (v && typeof v === "object") return Number(v.id ?? v._id ?? v.idField);
+      return NaN;
+    };
+
+    const fieldId = parseId(field);
+    const userId = parseId(user);
+
+    if (isNaN(fieldId) || isNaN(userId)) {
+      return res.status(400).json({ error: "Field or user id inválido" });
+    }
+
     try {
-      const fieldObj = await this.fieldService.getField(Number(field));
-      const userObj = await this.userService.getUser(Number(user));
+      const fieldObj = await this.fieldService.getField(Number(fieldId));
+      const userObj = await this.userService.getUser(Number(userId));
       const startDate = new Date(start);
       const endDate = new Date(end);
 
       const allReservations = await this.reservationService.getReservations();
 
-      const searchSameReservation = allReservations.find((r: Reservation) => {
-        const field = r.getField().getId() === fieldObj.getId();
-        const start = r.getStart().getTime() === startDate.getTime();
-        const end = r.getEnd().getTime() === endDate.getTime();
-        return field && start && end;
+      const searchSameReservation = allReservations.find((r: any) => {
+        const rFieldId = this.getFieldIdFromReservation(r);
+        const rStart = this.getStartFromReservation(r);
+        const rEnd = this.getEndFromReservation(r);
+
+        const sameField = rFieldId !== undefined && rFieldId === fieldObj.getId();
+        const sameStart = rStart && rStart.getTime() === startDate.getTime();
+        const sameEnd = rEnd && rEnd.getTime() === endDate.getTime();
+
+        return sameField && sameStart && sameEnd;
       });
 
       if (searchSameReservation) {
@@ -93,47 +149,43 @@ export class ReservationController {
       const saved = await this.reservationService.addReservation(reservation);
       return res.status(201).json(saved);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: error?.message ?? error });
     }
   };
 
   //Eliminar una reserva
-  eliminateReservation = async (req: Request, res: Response) => {
-    const { id } = req.params;
+  eliminateReservation = (req: Request, res: Response) => {
+    const  id  = req.params.id;
     if (!id) {
       return res.status(400).json({ error: "ID no es correcto" });
     }
     try {
-      const reservationDelete = await this.reservationService.deleteReservation(
-        Number(id)
-      );
+      this.reservationService.deleteReservation(Number(id));
       this.subject.notify(`La reserva ${id} se liberó`);
 
-      return res.status(200).json({
-        message: `Reserva ${id} eliminada correctamente`,
-        reservation: reservationDelete,
-      });
+      return res.status(200).json({message: `Reservation with ID: ${id} eliminated`});
     } catch (error) {
-      return res.status(400).json({ error: error });
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message});
+      }
     }
   };
 
   //Editar campos
-  fieldReservationEdit = async (req: Request, res: Response) => {
+  fieldReservationEdit = (req: Request, res: Response) => {
     const id = req.params.id;
     const field = req.body.field;
     if (!id || !field) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const fieldObj = await this.fieldService.getField(Number(field));
-      const updated = await this.reservationService.editReservationField({
-        id: Number(id),
-        field: fieldObj,
-      });
-      return res.status(200).json(updated);
+      this.fieldService.getField(Number(field));
+      this.reservationService.editReservationField({id: Number(id),field: field});
+      return res.status(200).json({message: `field id in reservation changed succesfully`});
     } catch (error) {
-      return res.status(400).json({ error: error });
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message});
+      }
     }
   };
 

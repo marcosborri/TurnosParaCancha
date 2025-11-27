@@ -72,7 +72,7 @@ export class FieldController {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const nameEdited = FieldService.editFieldName(Number(id), name );
+      FieldService.editFieldName(Number(id), name );
       return res.status(200).json({message: `Name changed succesfully`});
     } catch (error) {
       if (error instanceof Error) {
