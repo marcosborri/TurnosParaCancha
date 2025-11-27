@@ -38,12 +38,30 @@ export class ReservationService {
   }): Promise<Reservation> {
     try {
       const fieldToEdit = await reservationRepo.getReservation(data.id);
-      if (!fieldToEdit) {
-        throw new Error("Cancha no se puede editar");
+      if (!fieldToEdit) throw new Error("Reserva no encontrada");
+
+      // Normalizar field a objeto plano (POJO) para que el repo lo guarde correctamente en JSON
+      const fld = data.field as any;
+      const plainField = {
+        id: typeof fld.getId === "function" ? fld.getId() : fld.id ?? fld._id,
+        name: fld.name,
+        typeField: fld.typeField ?? fld.type_field,
+        price: fld.price,
+      };
+
+      // Actualizar la instancia en memoria (si existe método) para devolverla correctamente
+      if (typeof (fieldToEdit as any).setField === "function") {
+        (fieldToEdit as any).setField(data.field);
+      } else {
+        (fieldToEdit as any).field = plainField;
       }
 
-      fieldToEdit.setField(data.field);
-      await reservationRepo.editReservationField(data);
+      // Llamar al repo con el objeto plano (evita que quede solo el número)
+      await reservationRepo.editReservationField({
+        id: data.id,
+        field: plainField as any,
+      });
+
       return fieldToEdit;
     } catch (error) {
       throw new Error(`Error al editar la cancha de la reserva ${error}`);
@@ -132,7 +150,19 @@ export class ReservationService {
         throw new Error("Reserva no existente");
       }
 
-      await reservationRepo.deleteReservation(reservationToDelete.getId());
+      // obtener id de forma segura: acepta instancias con getId() o plain objects con .id/_id
+      let idToDelete: number | undefined;
+      if (typeof (reservationToDelete as any).getId === "function") {
+        idToDelete = Number((reservationToDelete as any).getId());
+      } else {
+        idToDelete = Number((reservationToDelete as any).id ?? (reservationToDelete as any)._id);
+      }
+
+      if (!idToDelete || isNaN(idToDelete)) {
+        throw new Error("ID de reserva inválido para eliminar");
+      }
+
+      await reservationRepo.deleteReservation(idToDelete);
       return reservationToDelete;
     } catch (error) {
       throw new Error(`Error al eliminar la reserva ${error}`);
