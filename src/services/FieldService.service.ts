@@ -2,6 +2,7 @@ import { Field, TypeField } from "../models/field.model";
 import fieldRepo from "../models/implementations/mock/mockField";
 import reservationRepo from "../models/implementations/mock/mockReservation";
 import { reservationSubject } from "../models/observer/reservation.interface";
+import { loadData } from "../utils/jsonFunctions.utils";
 
 export class FieldService {
   //getFields
@@ -22,53 +23,53 @@ export class FieldService {
     }
   }
 
-  //addField (habria que ver bien el ID en el mockField.ts) en base de datos se crea solo cuando conectemos con una, por lo tanto no se va a necesitar validacion si es repetido
-    async addField(data: { name: string; type: TypeField;}): Promise<Field> {
+  //Agregar cancha
+  async addField(data: { name: string; type: TypeField }): Promise<Field> {
     return fieldRepo.addField(data);
   }
 
   //Editar nombre
-  editFieldName(id: number, name: string ): Promise<Field> {
-    return fieldRepo.editFieldName(id, name)
+  editFieldName(id: number, name: string): Promise<Field> {
+    return fieldRepo.editFieldName(id, name);
   }
 
   //Editar Tipo de cancha
   editTypeField(id: number, type: TypeField): Promise<Field> {
-    return fieldRepo.editFieldType(id, type)
-}
+    return fieldRepo.editFieldType(id, type);
+  }
 
   //Editar precio de la cancha
-  async editFieldPrice(id: number, price: number ): Promise<Field> {
-    return fieldRepo.editFieldPrice(id, price)
+  async editFieldPrice(id: number, price: number): Promise<Field> {
+    return fieldRepo.editFieldPrice(id, price);
   }
-  
 
   //deleteField
   async deleteField(id: number): Promise<void> {
     try {
       const fieldToDelete = await fieldRepo.getField(id);
-
       if (!fieldToDelete) {
         throw new Error("Cancha no existente");
       }
 
-      // Buscar todas las reservas asociadas a esta cancha
-      const reservations = await reservationRepo.getReservations();
+      const rawReservations = await loadData("src/database/reservation.json");
 
-      const toDelete = reservations.filter((r) => r.getField().getId() === id);
+      const toDelete = rawReservations.filter((r: any) => {
+        const fieldId = typeof r.field === "object" ? r.field.id : r.field;
+        return Number(fieldId) === Number(id);
+      });
 
-      // 🔥 Borrar reservas y notificar
-      for (const reservation of toDelete) {
-        await reservationRepo.deleteReservation(reservation.getId());
+      for (const r of toDelete) {
+        await reservationRepo.deleteReservation(r.id);
+
         reservationSubject.notify(
-          `La reserva ${reservation.getId()} se cancelo porque se eliminó la cancha`
+          `La reserva ${r.id} fue cancelada porque se eliminó la cancha`
         );
       }
 
-      // Finalmente borrar la cancha
+      // 🔥 Finalmente borrar la cancha
       await fieldRepo.deleteField(id);
     } catch (error) {
-      throw new Error(`Error al eliminar la cancha ${error}`);
+      throw new Error(`Error al eliminar la cancha: ${error}`);
     }
   }
 }

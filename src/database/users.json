@@ -6,9 +6,21 @@
     "phonenumber": "2911111111"
   },
   {
-    "id": 3,
-    "username": "marcos",
-    "email": "marcos@example.com",
-    "phonenumber": "2915896896"
+    "id": 4,
+    "username": "ramiro",
+    "email": "ramiro@example.com",
+    "phonenumber": "2915698741"
+  },
+  {
+    "id": 5,
+    "username": "guali",
+    "email": "guali@example.com",
+    "phonenumber": "2915365426"
+  },
+  {
+    "id": 6,
+    "username": "ale",
+    "email": "ale@example.com",
+    "phonenumber": "291569874"
   }
 ]
