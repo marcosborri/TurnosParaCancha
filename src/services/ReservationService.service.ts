@@ -40,7 +40,6 @@ export class ReservationService {
       const fieldToEdit = await reservationRepo.getReservation(data.id);
       if (!fieldToEdit) throw new Error("Reserva no encontrada");
 
-      // Normalizar field a objeto plano (POJO) para que el repo lo guarde correctamente en JSON
       const fld = data.field as any;
       const plainField = {
         id: typeof fld.getId === "function" ? fld.getId() : fld.id ?? fld._id,
@@ -155,7 +154,9 @@ export class ReservationService {
       if (typeof (reservationToDelete as any).getId === "function") {
         idToDelete = Number((reservationToDelete as any).getId());
       } else {
-        idToDelete = Number((reservationToDelete as any).id ?? (reservationToDelete as any)._id);
+        idToDelete = Number(
+          (reservationToDelete as any).id ?? (reservationToDelete as any)._id
+        );
       }
 
       if (!idToDelete || isNaN(idToDelete)) {
