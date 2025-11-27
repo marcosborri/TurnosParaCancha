@@ -1,6 +1,9 @@
 import fs from "fs";
+import { Reservation } from "../models/reservation.model";
+import { Field } from "../models/field.model";
+import { User } from "../models/user.model";
 
-export async function saveData(data: Array<any> | any, filePath: string) {
+export async function saveData(data: Array<User> | Array<Field> | Array<Reservation>, filePath: string) {
     const jsonData = JSON.stringify(data, null, 2);
     try {
         await fs.promises.writeFile(filePath, jsonData);

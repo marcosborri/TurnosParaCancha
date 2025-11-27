@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { ReservationCrud } from "../models/interface/reservationCrud.model";
-import { UserCrud } from "../models/interface/userCrud.model";
-import { FieldCrud } from "../models/interface/fieldCrud.model";
+import {ReservationService} from '../services/ReservationService.service'
 import { Observer } from "../models/observer/observer.interface";
 import { Reservation } from "../models/reservation.model";
+import {FieldService} from '../services/FieldService.service'
+import {UserService} from '../services/UserService.service'
 import { reservationSubject } from "../models/observer/reservation.interface";
 import { ReservationObserver } from "../observers/reservationObserver";
 
 export class ReservationController {
   constructor(
-    private reservationService: ReservationCrud,
-    private userService: UserCrud,
-    private fieldService: FieldCrud,
+    private reservationService: ReservationService,
+    private userService: UserService,
+    private fieldService: FieldService,
     private subject = reservationSubject
   ) {}
 
