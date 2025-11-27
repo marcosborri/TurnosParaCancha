@@ -67,7 +67,7 @@ export class MockField implements FieldCrud {
             if (!fieldFound) {
                 reject(new Error(`Field with id:${id} doesnt exist`))
             } else {
-                fieldFound.type = type
+                fieldFound.typeField = type
                 saveData(data, this.filePath)
                 resolve(fieldFound)
             }

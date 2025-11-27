@@ -83,12 +83,12 @@ export class FieldController {
 
   async editType(req: Request, res: Response) {
     const id = req.params.id
-    const type = req.body.type
-    if (!id || !type) {
+    const typeField = req.body.typeField
+    if (!id || !typeField) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const typeEdited = await FieldService.editTypeField(Number(id), type );
+      const typeEdited = await FieldService.editTypeField(Number(id), typeField );
       return res.status(200).json({message: `Type changed succesfully`});
     } catch (error) {
       if (error instanceof Error) {
