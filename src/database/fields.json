@@ -1,8 +1,14 @@
 [
   {
     "id": 7,
-    "name": "Cancha 1",
+    "name": "Cancha cesped natural",
     "typeField": "F5",
     "price": 1500
+  },
+  {
+    "id": 4,
+    "name": "Cancha cemento",
+    "typeField": "F6",
+    "price": 2000
   }
 ]

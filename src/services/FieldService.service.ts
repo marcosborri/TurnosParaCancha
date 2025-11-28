@@ -66,7 +66,7 @@ export class FieldService {
         );
       }
 
-      // 🔥 Finalmente borrar la cancha
+      //Finalmente borrar la cancha
       await fieldRepo.deleteField(id);
     } catch (error) {
       throw new Error(`Error al eliminar la cancha: ${error}`);

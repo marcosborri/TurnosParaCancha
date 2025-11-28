@@ -1,4 +1,4 @@
-import { Observer } from "../models/observer/observer.interface";
+import { Observer } from "./observer.interface";
 
 export class ReservationObserver implements Observer {
   constructor(private userEmail: string) {}

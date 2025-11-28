@@ -1,113 +1,181 @@
-#  Sistema de Reservas de Canchas
+# Sistema de Reservas de Canchas
+
 Este proyecto es una API REST que permite gestionar un complejo deportivo.
-Los usuarios pueden consultar qué canchas hay disponibles y reservarlas por hora (máximo 1h por turno).
+Los usuarios pueden consultar qué canchas hay disponibles y reservarlas por hora.
 
 ### El sistema contempla:
 
-Canchas de distintos tamaños (F5, F7, F11), cada una con un precio predefinido.
+- Registrar canchas de diferentes tipos (F5, F6, F11)
 
-Reservas de hasta una hora exacta (ejemplo: de 08:00 a 09:00).
+- Definir automáticamente su precio mediante el **Factory Method**
 
-Validación de solapamiento (no se pueden reservar dos turnos en la misma cancha y horario).
+- Permitir que los usuarios reserven turnos de 1 hora
+
+- Detectar choques de horario
+
+- Notificar a usuarios interesados cuando un turno se libera **(Observer)**
+
+- Eliminar canchas junto a sus reservas asociadas, enviando notificaciones a los usuarios
 
 # Tecnologías
 
-* Node.js + Express
+- Node.js + Express
 
-* TypeScript
+- TypeScript
 
-* Sequelize + PostgreSQL
+- Archivos JSON como base de datos
 
-* Docker
-
+- Swagger
 
 # Patrones de Diseño
 
-> ##  Factory Method
+> ## Factory Method
 
 Se utiliza para la creación de canchas según su tipo.
 
-### Ejemplo
+- Al registrar una cancha, el sistema decide si es F5, F6 o F11 y asigna precio automáticamente.
 
-* al registrar una cancha, la fábrica decide si es F5, F7 o F11 y asigna precio automáticamente.
-
-Evita que la lógica de precios esté dispersa por el código.
+- Evita que la lógica se repita y permite agregar nuevos tipos sin modificar el codigo existente.
 
 > ## Observer
-Usado para manejar notificaciones cuando se crea o cancela una reserva.
 
-El Subject es la reserva.
+Se usa para manejar notificaciones cuando:
 
-Los Observers pueden ser distintos módulos: notificador por email, logger, integración con un sistema externo.
+- Un usuario intenta reservar un turno ocupado, entonces queda en “lista de espera”
 
-Así, cada vez que ocurre un evento en las reservas, los observers suscriptos reaccionan automáticamente. 
+- Se cancela una reserva
+
+- Se elimina una cancha y a la vez la reserva.
+
+Los Observers pueden ser distintos módulos como email, logger, whatsapp, etc. Esta implementacion lo simula mediante `console.log()`
+
+Así que cada vez que ocurre un evento en las reservas, los observers reaccionan automaticamente.
 
 ### Ejemplo
 
-* Supongamos que la cancha F5 a las 18:00 ya está ocupada. El usuario Jorge intenta reservar, pero el sistema responde:
-{"error": "Turno ocupado"}. Sin embargo, Jorge puede marcar interés en ese turno (como una "lista de espera"). Si el turno se llega a cancelar, el Subject (Reserva) notifica a todos los Observers
+- Un usuario intenta reservar un turno ocupado; queda registrado como interesado. Si ese turno se libera, el Subject notifica automáticamente a los observers.
 
 # Estructura del proyecto
-```src/
+
+```bash
+src/
  ├── controllers/
  │    ├── field.controller.ts
- │    └── reservation.controller.ts
- ├── factories/
- │    └── field.factory.ts
- ├── observers/      
- │    ├── observer.interface.ts
- │    ├── reservation.subject.ts
- │    ├── email.observer.ts
- │    └── logger.observer.ts
- ├── models/
- │    ├── field.model.ts
- │    └── reservation.model.ts
+ │    ├── reservation.controller.ts
+ │    └── user.controller.ts
+ │
  ├── routes/
  │    ├── field.routes.ts
- │    └── reservation.routes.ts
- ├── db/
- │    └── connection.ts
+ │    ├── reservation.routes.ts
+ │    └── user.routes.ts
+ │
+ ├── services/
+ │    ├── FieldService.service.ts
+ │    ├── ReservationService.service.ts
+ │    └── UserService.service.ts
+ │
+ ├── models/
+ │    ├── field.model.ts
+ │    ├── reservation.model.ts
+ │    ├── user.model.ts
+ │
+ │    ├── footballFields/
+ │    │     ├── F5.models.footballField.ts
+ │    │     ├── F6.models.footballField.ts
+ │    │     └── F11.models.footballField.ts
+ │
+ │    ├── observer/
+ │    │     ├── observer.interface.ts
+ │    │     ├── subject.interface.ts
+ │    │     └── reservation.interface.ts
+ │
+ │    └── implementations/
+ │          └── mock/
+ │               ├── mockField.ts
+ │               ├── mockUser.ts
+ │               └── mockReservation.ts
+ │
+ ├── factories/
+ │    └── field.factory.ts
+ │
+ ├── database/                # Permanencia de datos en archivos JSON
+ │    ├── fields.json
+ │    ├── users.json
+ │    └── reservation.json
+ │
+ ├── utils/
+ │    └── jsonFunctions.utils.ts
  ├── app.ts
- └── server.ts
+ ├── server.ts
+ ├── swagger.ts
+
 ```
-# Flujo de Uso 
 
-1) El administrador crea las canchas (ej: F5, F7, F11).
+---
 
-    * La Factory asigna automáticamente el precio.
+# Instalacion
 
-2) El usuario consulta las canchas disponibles.
+1- Clonar repositorio
 
-3) El usuario crea una reserva en un horario.
+```bash
+git clone https://github.com/marcosborri/TurnosParaCancha.git
+```
 
-    * Sequelize guarda el registro.
+2- Ingresar a la carpeta del proyecto
 
-    * El Subject (Reserva) notifica a todos los Observers suscriptos.
+```bash
+cd TurnosParaCancha
+```
 
+3- Ejecutar instalacion de dependencias
 
-4) Si se cancela la reserva, también se dispara la notificación a los observers.
+```bash
+npm install
+```
 
-# ENDPOINTS
->Endpoints de cancha (pueden terminar habiendo mas)
+4- Ejecutar
 
-* Crear cancha: POST /api/fields
+```bash
+npm run build
+```
 
-* Listar cancha: GET /api/fields
+5- Levantar el servidor ejecutando
 
->Endpoints de las reservas (pueden terminar habiendo mas)
+```bash
+npm run dev
+```
 
-* Crear reserva: POST /api/reservas
+# Flujo de Uso
 
-* Cancelar reserva: DELETE api/reservas/:id
+1. El administrador crea las canchas (ej: F5, F6, F11).
 
+   - La Factory asigna automáticamente el precio.
+
+2. El usuario consulta las canchas disponibles.
+
+3. El usuario crea una reserva en un horario.
+
+   - JSON guarda el registro.
+   - Si esta ocupada, en el caso que se libere se le avisara al usuario que quizo reservarla
+
+4. Si se elimina la cancha las reservas asociadas a la misma se eliminaran y se le avisar al usuario dueño de la reserva y a las personas que esperaban que se liberara.
+
+5. Si se cancela la reserva, se dispara la notificación a los observers.
+
+# API
+
+### Swagger
+
+http://localhost:3000/api-docs
+
+### Postman Collection
+
+https://crimson-capsule-804402.postman.co/workspace/My-Workspace~bf3b43f8-d000-417c-8f03-03490c707f31/collection/32203895-b867ad8c-9dc4-42b6-b70e-81c0cd3d625e?action=share&creator=32203895
 
 # Integrantes del grupo
 
-Romero, Mariano
+Romero Mariano
 
-Ramos Cavero, Luciano
+Ramos Cavero Luciano
 
-Borri, Marcos
-
-# Aclaraciones
-Lo planteado es el MVP del proyecto, si vemos que andamos bien con el tiempo vamos a integrar un frontend para la API, o futuras funciones que se nos ocurran
+Borri Marcos
