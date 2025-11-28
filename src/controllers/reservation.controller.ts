@@ -5,7 +5,7 @@ import { Reservation } from "../models/reservation.model";
 import { FieldService } from "../services/FieldService.service";
 import { UserService } from "../services/UserService.service";
 import { reservationSubject } from "../models/observer/reservation.interface";
-import { ReservationObserver } from "../observers/reservationObserver";
+import { ReservationObserver } from "../models/observer/reservationObserver";
 
 export class ReservationController {
   constructor(

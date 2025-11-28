@@ -7,13 +7,13 @@ export class FieldController {
       return res.status(200).json(allFields);
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
   }
 
   async getFieldById(req: Request, res: Response) {
-    const  id  = req.params.id;
+    const id = req.params.id;
 
     if (!id) {
       return res
@@ -25,13 +25,13 @@ export class FieldController {
       return res.status(200).json(field);
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
   }
 
   async addNewField(req: Request, res: Response) {
-    const { name, type} = req.body;
+    const { name, type } = req.body;
     if (!name || !type) {
       return res
         .status(400)
@@ -45,72 +45,78 @@ export class FieldController {
       return res.status(201).json(newField);
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
   }
 
   async eliminateField(req: Request, res: Response) {
-    const  id  = req.params.id;
+    const id = req.params.id;
     if (!id) {
       return res.status(400).json({ error: "ID no es correcto" });
     }
     try {
-      FieldService.deleteField(Number(id));
-      return res.status(200).json({message: `Field with ID: ${id} eliminated`});
+      await FieldService.deleteField(Number(id));
+      return res
+        .status(200)
+        .json({ message: `Field with ID: ${id} eliminated` });
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
   }
 
   async editName(req: Request, res: Response) {
-    const id = req.params.id
-    const name = req.body.name
+    const id = req.params.id;
+    const name = req.body.name;
     if (!id || !name) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      FieldService.editFieldName(Number(id), name );
-      return res.status(200).json({message: `Name changed succesfully`});
+      await FieldService.editFieldName(Number(id), name);
+      return res.status(200).json({ message: `Name changed succesfully` });
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
   }
 
   async editType(req: Request, res: Response) {
-    const id = req.params.id
-    const typeField = req.body.typeField
+    const id = req.params.id;
+    const typeField = req.body.typeField;
     if (!id || !typeField) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const typeEdited = await FieldService.editTypeField(Number(id), typeField );
-      return res.status(200).json({message: `Type changed succesfully`});
+      const typeEdited = await FieldService.editTypeField(
+        Number(id),
+        typeField
+      );
+      return res.status(200).json({ message: `Type changed succesfully` });
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
   }
 
   async editPrice(req: Request, res: Response) {
-    const id = req.params.id
-    const price = req.body.price
+    const id = req.params.id;
+    const price = req.body.price;
     if (!id || !price) {
       return res.status(400).json({ error: "Falta completar campos" });
     }
     try {
-      const priceEdited = await FieldService.editFieldPrice(Number(id) , price );
-      return res.status(200).json({message: `Price changed succesfully`});
+      const priceEdited = await FieldService.editFieldPrice(Number(id), price);
+      return res.status(200).json({ message: `Price changed succesfully` });
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json({ error: error.message});
+        return res.status(400).json({ error: error.message });
       }
     }
-  }}
+  }
+}
 
 export default new FieldController();
