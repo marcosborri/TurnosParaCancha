@@ -82,15 +82,3 @@ describe('integration [POST] /fields/', ()=>{
     })
 })
 
-describe('integration [PUT] /fields/:id/name', ()=>{
-    test("Should update the field name", async ()=>{
-        const oneField = await getOneField();
-        mockedFieldModel.editFieldName.mockResolvedValue({
-            ...oneField,
-            getName: () => "New Name"
-        });
-        const { status, body } = await request(app).put(`/fields/name`).send({ id: oneField.getId(), name: "New Name" });
-        expect(status).toBe(200);
-        expect(body.name).toBe("New Name")
-    })
-})

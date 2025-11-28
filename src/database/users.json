@@ -1,5 +1,4 @@
-[
-  {
+[  {
     "id": 2,
     "username": "diego",
     "email": "diego89@mail.com",
@@ -22,5 +21,11 @@
     "username": "julidente",
     "email": "julidente@example.com",
     "phonenumber": "2916666666"
+  },
+  {
+    "id": 7,
+    "username": "marulete03",
+    "email": "marulete03@gmail.com",
+    "phonenumber": 2910020022
   }
 ]

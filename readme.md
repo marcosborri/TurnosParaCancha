@@ -179,3 +179,6 @@ Romero Mariano
 Ramos Cavero Luciano
 
 Borri Marcos
+
+# Aclaración
+Debido a la refactorización, los tests quedaron en su mayoría obsoletos, por esta razón todos los tests (salvo los de integración) van a estar comentados 

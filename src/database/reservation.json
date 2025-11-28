@@ -1,5 +1,4 @@
-[
-  {
+[ {
     "id": 1,
     "user": {
       "id": 5,
@@ -34,5 +33,23 @@
     "start": "2025-09-20T13:00:00.000Z",
     "end": "2025-09-20T14:00:00.000Z",
     "paid": false
+  },
+  {
+    "id": 3,
+    "user": {
+      "id": 1,
+      "username": "Carl",
+      "email": "Carl@gmail.com",
+      "phonenumber": 2910000011
+    },
+    "field": {
+      "id": 1,
+      "name": "Cancha_A",
+      "typeField": "F7",
+      "price": 39000
+    },
+    "start": null,
+    "end": null,
+    "paid": true
   }
 ]
